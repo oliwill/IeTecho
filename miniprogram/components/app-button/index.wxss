@@ -1,0 +1,36 @@
+.app-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 0 18px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-body);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.app-button--primary {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  box-shadow: 0 6px 18px rgba(53, 175, 160, 0.24);
+}
+
+.app-button--secondary {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+}
+
+.app-button--plain {
+  background: var(--color-surface-soft);
+  color: var(--color-text-primary);
+}
+
+.app-button--text {
+  min-height: 40px;
+  padding: 0 8px;
+  background: transparent;
+  color: var(--color-primary-deep);
+  box-shadow: none;
+}

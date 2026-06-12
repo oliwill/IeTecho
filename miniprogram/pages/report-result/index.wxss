@@ -1,0 +1,49 @@
+.result-copy,
+.bullet,
+.disclaimer-card__text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-body);
+  line-height: 1.55;
+}
+
+.bullet {
+  position: relative;
+  padding-left: 16px;
+  margin-top: var(--space-2);
+}
+
+.bullet::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.suggestion-group {
+  margin-top: var(--space-4);
+}
+
+.suggestion-group:first-of-type {
+  margin-top: var(--space-3);
+}
+
+.suggestion-title,
+.disclaimer-card__title {
+  color: var(--color-text-primary);
+  font-size: var(--font-body);
+  font-weight: 800;
+}
+
+.disclaimer-card {
+  background: var(--color-surface-soft);
+  box-shadow: none;
+}
+
+.disclaimer-card__text {
+  margin-top: var(--space-2);
+  font-size: var(--font-body-small);
+}

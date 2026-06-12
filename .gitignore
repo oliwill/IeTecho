@@ -1,0 +1,6 @@
+.agents/
+skills-lock.json
+project.private.config.json
+node_modules/
+miniprogram/miniprogram_npm/
+.DS_Store

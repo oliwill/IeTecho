@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/family/index",
+    "pages/more/index",
+    "pages/member-detail/index",
+    "pages/member-edit/index",
+    "pages/report-upload/index",
+    "pages/interpreting/index",
+    "pages/report-result/index",
+    "pages/metric-confirm/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "家人健康档案",
+    "navigationBarBackgroundColor": "#F8F6F1",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F8F6F1"
+  },
+  "tabBar": {
+    "color": "#8EA0A3",
+    "selectedColor": "#1F7F76",
+    "backgroundColor": "#FFFDF8",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/family/index",
+        "text": "家人"
+      },
+      {
+        "pagePath": "pages/more/index",
+        "text": "更多"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

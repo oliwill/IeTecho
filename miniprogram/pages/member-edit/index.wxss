@@ -1,0 +1,65 @@
+.form-card {
+  padding-top: var(--space-card);
+}
+
+.form-item {
+  margin-top: var(--space-4);
+}
+
+.form-item:first-child {
+  margin-top: 0;
+}
+
+.form-label {
+  margin-bottom: var(--space-2);
+  color: var(--color-text-primary);
+  font-size: var(--font-body-small);
+  font-weight: 800;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-soft);
+  color: var(--color-text-primary);
+  font-size: var(--font-body);
+  padding: 12px 14px;
+}
+
+.form-input {
+  min-height: 44px;
+}
+
+.form-textarea {
+  min-height: 96px;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-soft);
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  font-weight: 700;
+}
+
+.chip--active,
+.chip--soft {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}

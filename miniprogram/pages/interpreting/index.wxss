@@ -1,0 +1,59 @@
+.interpreting-card {
+  text-align: left;
+}
+
+.interpreting-card__pulse {
+  width: 58px;
+  height: 58px;
+  border-radius: 22px;
+  margin-bottom: var(--space-5);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  letter-spacing: -0.012em;
+}
+
+.step-list {
+  margin-top: var(--space-5);
+}
+
+.step-item {
+  position: relative;
+  padding: 10px 0 10px 28px;
+  color: var(--color-text-muted);
+  font-size: var(--font-body);
+  line-height: 1.4;
+}
+
+.step-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-surface-soft);
+}
+
+.step-item--done,
+.step-item--active {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.step-item--done::before {
+  background: var(--color-primary);
+}
+
+.step-item--active::before {
+  background: var(--color-status-info);
+}
+
+.action-stack {
+  display: grid;
+  gap: var(--space-3);
+}

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "添加家人",
+  "usingComponents": {
+    "app-button": "../../components/app-button/index"
+  }
+}

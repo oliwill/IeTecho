@@ -1,0 +1,36 @@
+.reminder-card__top {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.reminder-card__title {
+  font-size: var(--font-body);
+  line-height: 1.4;
+  font-weight: 800;
+}
+
+.reminder-card__time,
+.reminder-card__note {
+  margin-top: 5px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  line-height: 1.5;
+}
+
+.reminder-card__actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.reminder-card__button {
+  min-height: 40px;
+  color: var(--color-primary-deep);
+  font-weight: 700;
+  font-size: var(--font-body-small);
+}
+
+.reminder-card__button--muted {
+  color: var(--color-text-secondary);
+}

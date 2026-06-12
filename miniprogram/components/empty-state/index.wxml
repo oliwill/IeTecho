@@ -1,0 +1,8 @@
+<view class="empty-state card card-soft">
+  <view class="empty-state__mark">{{mark}}</view>
+  <view class="empty-state__title">{{title}}</view>
+  <view class="empty-state__description">{{description}}</view>
+  <app-button wx:if="{{actionText}}" variant="{{actionVariant}}" bind:tapbutton="handleAction">
+    {{actionText}}
+  </app-button>
+</view>

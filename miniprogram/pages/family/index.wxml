@@ -1,0 +1,33 @@
+<view class="page-shell family-page">
+  <view class="family-page__header">
+    <view>
+      <view class="page-title">家人</view>
+      <view class="page-subtitle">每个人都是一本持续更新的健康档案。</view>
+    </view>
+    <button class="family-page__add tap-scale" bindtap="goEdit">＋</button>
+  </view>
+
+  <view class="section" wx:if="{{isFirstUse}}">
+    <family-profile-card member="{{firstUseMember}}" bind:open="goUpload" />
+    <view class="section">
+      <empty-state
+        mark="家"
+        title="也可以管理家人健康"
+        description="为父母、伴侣、孩子建立档案，复查和提醒会按成员归档。"
+        action-text="添加家人"
+        action-variant="secondary"
+        bind:action="goEdit"
+      />
+    </view>
+  </view>
+
+  <view class="section stack-12" wx:else>
+    <family-profile-card
+      wx:for="{{members}}"
+      wx:key="id"
+      member="{{item}}"
+      bind:open="goMemberDetail"
+    />
+    <button class="family-page__tail-add tap-scale" bindtap="goEdit">＋ 添加父母 / 伴侣 / 孩子</button>
+  </view>
+</view>

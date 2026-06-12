@@ -1,0 +1,12 @@
+<view class="status-ring card">
+  <view class="status-ring__circle status-ring__circle--{{tone}}">
+    <view class="status-ring__number">{{attentionCount}}</view>
+    <view class="status-ring__label">项需关注</view>
+  </view>
+  <view class="status-ring__content">
+    <view class="status-ring__title">{{title}}</view>
+    <view class="status-ring__item">{{reminderCount}} 个复查 / 复诊提醒</view>
+    <view class="status-ring__item">{{trendChangeCount}} 个指标出现趋势变化</view>
+    <view class="status-ring__tip">状态环只汇总待关注事项，不代表健康评分。</view>
+  </view>
+</view>

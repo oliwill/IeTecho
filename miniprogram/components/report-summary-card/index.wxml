@@ -1,0 +1,11 @@
+<view class="report-card card tap-scale" bindtap="handleOpen">
+  <view class="report-card__top">
+    <view>
+      <view class="report-card__title">{{report.reportTypeLabel}}</view>
+      <view class="report-card__meta">{{report.reportDate}}<text wx:if="{{report.hospital}}">｜{{report.hospital}}</text></view>
+    </view>
+    <status-tag text="{{statusText}}" tone="{{tone}}" />
+  </view>
+  <view class="report-card__summary">{{report.summary}}</view>
+  <view class="report-card__footer" wx:if="{{report.pendingMetricCount}}">待确认 {{report.pendingMetricCount}} 个指标</view>
+</view>

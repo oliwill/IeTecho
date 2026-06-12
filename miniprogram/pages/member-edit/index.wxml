@@ -1,0 +1,45 @@
+<view class="page-shell edit-page">
+  <view class="page-title">添加家人</view>
+  <view class="page-subtitle">先记录必要信息，后续报告和提醒会归档到这个成员。</view>
+
+  <view class="section form-card card">
+    <view class="form-item">
+      <view class="form-label">姓名 / 昵称</view>
+      <input class="form-input" value="{{name}}" placeholder="例如：父亲" bindinput="onNameInput" />
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">关系</view>
+      <view class="chip-row">
+        <button wx:for="{{relations}}" wx:key="value" class="{{item.className}}" data-value="{{item.value}}" bindtap="selectRelation">{{item.label}}</button>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">关注重点</view>
+      <view class="chip-row">
+        <button wx:for="{{focusOptions}}" wx:key="*this" class="chip chip--soft">{{item}}</button>
+      </view>
+    </view>
+
+    <view class="form-grid">
+      <view class="form-item">
+        <view class="form-label">出生年份</view>
+        <input class="form-input" placeholder="1960" />
+      </view>
+      <view class="form-item">
+        <view class="form-label">性别</view>
+        <input class="form-input" placeholder="可不填" />
+      </view>
+    </view>
+
+    <view class="form-item">
+      <view class="form-label">既往病史</view>
+      <textarea class="form-textarea" placeholder="例如：高血压、糖尿病等，可稍后补充" />
+    </view>
+  </view>
+
+  <view class="section">
+    <app-button variant="primary" bind:tapbutton="saveMock">保存档案</app-button>
+  </view>
+</view>

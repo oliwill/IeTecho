@@ -1,0 +1,22 @@
+<view class="page-shell more-page">
+  <view class="page-title">更多</view>
+  <view class="page-subtitle">低频设置、隐私说明和产品边界都放在这里。</view>
+
+  <view class="section more-group card">
+    <view class="section-title">常用</view>
+    <button class="more-item" bindtap="showMock">提醒管理<text>›</text></button>
+    <button class="more-item" bindtap="showMock">数据导出<text>›</text></button>
+  </view>
+
+  <view class="section more-group card">
+    <view class="section-title">AI 与隐私</view>
+    <button class="more-item" bindtap="showAiNotice">AI 设置<text>›</text></button>
+    <button class="more-item" bindtap="showPrivacy">隐私说明<text>›</text></button>
+    <button class="more-item" bindtap="showDisclaimer">免责声明<text>›</text></button>
+  </view>
+
+  <view class="section more-group card">
+    <view class="section-title">关于</view>
+    <view class="more-copy">IeTecho 静态 Mock。当前版本只用于验证页面结构和视觉方向。</view>
+  </view>
+</view>

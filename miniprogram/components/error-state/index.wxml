@@ -1,0 +1,10 @@
+<view class="error-state card">
+  <view class="error-state__mark">!</view>
+  <view class="error-state__content">
+    <view class="error-state__title">{{title}}</view>
+    <view class="error-state__description">{{description}}</view>
+    <app-button wx:if="{{actionText}}" variant="secondary" bind:tapbutton="handleRetry">
+      {{actionText}}
+    </app-button>
+  </view>
+</view>

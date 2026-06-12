@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "strict": false,
+    "noImplicitAny": false,
+    "allowJs": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["miniprogram-api-typings"]
+  },
+  "include": ["miniprogram/**/*.ts"],
+  "exclude": ["node_modules", "miniprogram/miniprogram_npm"]
+}

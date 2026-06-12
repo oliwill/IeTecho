@@ -1,0 +1,78 @@
+.page-shell {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 20px var(--space-page-x) calc(24px + env(safe-area-inset-bottom));
+  background: var(--color-page);
+  color: var(--color-text-primary);
+}
+
+.page-title {
+  font-size: var(--font-page-title);
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+}
+
+.page-subtitle {
+  margin-top: 6px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  line-height: 1.5;
+}
+
+.section {
+  margin-top: var(--space-section-y);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.section-title {
+  font-size: var(--font-section-title);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.card {
+  box-sizing: border-box;
+  border-radius: var(--radius-xl);
+  padding: var(--space-card-large);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.card-soft {
+  background: var(--color-surface-warm);
+}
+
+.stack-12 > view,
+.stack-12 > button {
+  margin-top: var(--space-3);
+}
+
+.stack-12 > view:first-child,
+.stack-12 > button:first-child {
+  margin-top: 0;
+}
+
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.muted-text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  line-height: 1.5;
+}
+
+.caption-text {
+  color: var(--color-text-muted);
+  font-size: var(--font-caption);
+  line-height: 1.45;
+}

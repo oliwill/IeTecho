@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "首页",
+  "usingComponents": {
+    "app-button": "../../components/app-button/index",
+    "empty-state": "../../components/empty-state/index",
+    "reminder-card": "../../components/reminder-card/index",
+    "report-summary-card": "../../components/report-summary-card/index",
+    "trend-chart-card": "../../components/trend-chart-card/index"
+  }
+}

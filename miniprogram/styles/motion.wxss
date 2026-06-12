@@ -1,0 +1,48 @@
+.animate-card-enter {
+  animation: card-enter var(--duration-card-enter) var(--ease-standard) both;
+}
+
+.animate-card-enter.delay-1 {
+  animation-delay: 40ms;
+}
+
+.animate-card-enter.delay-2 {
+  animation-delay: 80ms;
+}
+
+.animate-highlight {
+  animation: annotation-highlight var(--duration-highlight) var(--ease-standard) both;
+}
+
+.tap-scale {
+  transition-property: transform, opacity;
+  transition-duration: var(--duration-tap);
+  transition-timing-function: var(--ease-standard);
+}
+
+.tap-scale:active {
+  transform: scale(0.96);
+  opacity: 0.94;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes annotation-highlight {
+  from {
+    opacity: 0.86;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

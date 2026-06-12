@@ -1,0 +1,28 @@
+{
+  "description": "IeTecho 家庭健康小程序静态 Mock",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "bundle": false,
+    "userConfirmedBundleSwitch": false,
+    "urlCheck": false,
+    "scopeDataCheck": false,
+    "coverView": true,
+    "es6": true,
+    "postcss": true,
+    "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
+    "preloadBackgroundData": false,
+    "minified": false,
+    "autoAudits": false,
+    "newFeature": true,
+    "useCompilerPlugins": ["typescript"]
+  },
+  "compileType": "miniprogram",
+  "libVersion": "latest",
+  "appid": "touristappid",
+  "projectname": "IeTecho",
+  "miniprogramRoot": "miniprogram/",
+  "condition": {}
+}

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "解读中",
+  "usingComponents": {
+    "app-button": "../../components/app-button/index"
+  }
+}

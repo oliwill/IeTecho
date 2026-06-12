@@ -1,0 +1,38 @@
+<view class="page-shell detail-page">
+  <family-profile-card member="{{member}}" />
+
+  <view class="section">
+    <health-status-ring
+      title="当前关注事项"
+      attention-count="{{member.abnormalMetricCount}}"
+      reminder-count="{{member.reminderCount}}"
+      trend-change-count="2"
+      tone="attention"
+    />
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <view class="section-title">最近报告</view>
+      <button class="text-link" bindtap="goUpload">上传新报告</button>
+    </view>
+    <report-summary-card report="{{recentReport}}" bind:open="goReportResult" />
+  </view>
+
+  <view class="section">
+    <trend-chart-card items="{{trendItems}}" status-text="数据不足时不强画趋势" tone="info" />
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <view class="section-title">建议与提醒</view>
+    </view>
+    <reminder-card wx:for="{{memberReminders}}" wx:key="id" reminder="{{item}}" show-actions="{{true}}" />
+  </view>
+
+  <view class="section history-card card">
+    <view class="section-title">历史记录</view>
+    <view class="history-item">2026.06.01｜体检报告｜待确认指标</view>
+    <view class="history-item">2026.03.12｜门诊记录｜血压记录</view>
+  </view>
+</view>

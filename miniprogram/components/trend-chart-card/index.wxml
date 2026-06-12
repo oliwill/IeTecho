@@ -1,0 +1,17 @@
+<view class="trend-card card">
+  <view class="trend-card__top">
+    <view>
+      <view class="trend-card__title">{{title}}</view>
+      <view class="trend-card__meta">{{subtitle}}</view>
+    </view>
+    <status-tag text="{{statusText}}" tone="{{tone}}" />
+  </view>
+  <view class="trend-card__items">
+    <view class="trend-card__item" wx:for="{{items}}" wx:key="metricName">
+      <view class="trend-card__metric">{{item.metricName}}</view>
+      <view class="trend-card__value">{{item.currentValue}}</view>
+      <view class="trend-card__direction trend-card__direction--{{item.status}}">{{item.symbol}}</view>
+    </view>
+  </view>
+  <view class="trend-card__note">静态 Mock 阶段暂不用 ECharts，正式趋势页会展示正常范围和异常点。</view>
+</view>

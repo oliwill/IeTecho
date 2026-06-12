@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "报告解读",
+  "usingComponents": {
+    "app-button": "../../components/app-button/index",
+    "status-tag": "../../components/status-tag/index",
+    "metric-annotation-card": "../../components/metric-annotation-card/index"
+  }
+}

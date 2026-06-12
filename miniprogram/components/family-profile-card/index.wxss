@@ -1,0 +1,69 @@
+.family-card {
+  min-height: 156px;
+}
+
+.family-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.family-card__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-card-title);
+  font-weight: 800;
+  color: var(--color-text-inverse);
+  background: var(--color-primary);
+}
+
+.family-card__avatar--father { background: #6B8EA7; }
+.family-card__avatar--mother { background: #D79A63; }
+.family-card__avatar--self { background: var(--color-primary); }
+.family-card__avatar--child { background: #9FBD6E; }
+.family-card__avatar--partner { background: #9A8FB8; }
+
+.family-card__name-row {
+  margin-top: var(--space-4);
+}
+
+.family-card__name {
+  font-size: var(--font-card-title);
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.family-card__meta,
+.family-card__detail,
+.family-card__next {
+  margin-top: 4px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  line-height: 1.5;
+}
+
+.family-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--space-3);
+}
+
+.family-card__tag {
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+  font-size: var(--font-caption);
+  font-weight: 600;
+}
+
+.family-card__next {
+  margin-top: var(--space-3);
+  color: var(--color-text-primary);
+  font-weight: 700;
+}

@@ -1,0 +1,59 @@
+.trend-card__top {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.trend-card__title {
+  font-size: var(--font-card-title);
+  font-weight: 800;
+}
+
+.trend-card__meta {
+  margin-top: 4px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+}
+
+.trend-card__items {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.trend-card__item {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-soft);
+}
+
+.trend-card__metric {
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+}
+
+.trend-card__value {
+  margin-top: 4px;
+  font-size: var(--font-body-small);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.trend-card__direction {
+  margin-top: 6px;
+  font-size: var(--font-number);
+  font-weight: 900;
+  color: var(--color-status-normal);
+}
+
+.trend-card__direction--attention { color: var(--color-status-attention); }
+.trend-card__direction--warning { color: var(--color-status-warning); }
+
+.trend-card__note {
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-caption);
+  line-height: 1.45;
+}

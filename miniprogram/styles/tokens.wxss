@@ -1,0 +1,61 @@
+page {
+  --color-primary: #35AFA0;
+  --color-primary-deep: #1F7F76;
+  --color-primary-soft: #EAF8F5;
+  --color-primary-muted: #CFEDEA;
+
+  --color-page: #F8F6F1;
+  --color-surface: #FFFFFF;
+  --color-surface-soft: #F1F5F6;
+  --color-surface-warm: #FFFDF8;
+
+  --color-text-primary: #263238;
+  --color-text-secondary: #5F7377;
+  --color-text-muted: #8EA0A3;
+  --color-text-inverse: #FFFFFF;
+
+  --color-status-normal: #35AFA0;
+  --color-status-attention: #F2A65A;
+  --color-status-warning: #E8796D;
+  --color-status-info: #6BA7D8;
+  --color-status-done: #7CBF7A;
+
+  --font-page-title: 23px;
+  --font-section-title: 19px;
+  --font-card-title: 18px;
+  --font-body: 16px;
+  --font-body-small: 15px;
+  --font-caption: 13px;
+  --font-number-large: 24px;
+  --font-number: 20px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-page-x: 16px;
+  --space-section-y: 20px;
+  --space-card: 16px;
+  --space-card-large: 20px;
+  --space-inline: 8px;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 4px 16px rgba(38, 50, 56, 0.08);
+  --shadow-card-soft: 0 2px 10px rgba(38, 50, 56, 0.06);
+  --shadow-floating: 0 8px 24px rgba(38, 50, 56, 0.12);
+
+  --duration-tap: 100ms;
+  --duration-card-enter: 200ms;
+  --duration-highlight: 200ms;
+  --duration-expand: 260ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+}

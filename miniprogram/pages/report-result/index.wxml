@@ -1,0 +1,51 @@
+<view class="page-shell result-page">
+  <view class="page-title">报告解读</view>
+  <view class="page-subtitle">2026-06-01｜我的体检报告</view>
+
+  <view class="section card card-soft">
+    <view class="section-title">报告摘要</view>
+    <view class="result-copy">{{interpretation.summary}}</view>
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <view class="section-title">异常指标</view>
+      <status-tag text="待确认" tone="info" />
+    </view>
+    <view class="stack-12">
+      <metric-annotation-card wx:for="{{abnormalMetrics}}" wx:key="id" metric="{{item}}" />
+    </view>
+  </view>
+
+  <view class="section card">
+    <view class="section-title">重点关注</view>
+    <view class="bullet" wx:for="{{interpretation.keyConcerns}}" wx:key="*this">{{item}}</view>
+  </view>
+
+  <view class="section card">
+    <view class="section-title">生活方式建议</view>
+    <view class="suggestion-group">
+      <view class="suggestion-title">饮食</view>
+      <view class="bullet" wx:for="{{interpretation.lifestyleSuggestions.diet}}" wx:key="*this">{{item}}</view>
+    </view>
+    <view class="suggestion-group">
+      <view class="suggestion-title">运动与习惯</view>
+      <view class="bullet" wx:for="{{interpretation.lifestyleSuggestions.exercise}}" wx:key="*this">{{item}}</view>
+      <view class="bullet" wx:for="{{interpretation.lifestyleSuggestions.habits}}" wx:key="*this">{{item}}</view>
+    </view>
+  </view>
+
+  <view class="section card">
+    <view class="section-title">复查 / 就医提醒</view>
+    <view class="bullet" wx:for="{{interpretation.followUpSuggestions}}" wx:key="*this">{{item}}</view>
+  </view>
+
+  <view class="section disclaimer-card card">
+    <view class="disclaimer-card__title">免责声明</view>
+    <view class="disclaimer-card__text">{{interpretation.disclaimer}}</view>
+  </view>
+
+  <view class="section">
+    <app-button variant="primary" bind:tapbutton="goConfirm">确认关键指标并保存</app-button>
+  </view>
+</view>

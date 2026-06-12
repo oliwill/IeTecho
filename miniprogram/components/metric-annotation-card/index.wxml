@@ -1,0 +1,14 @@
+<view class="metric-card card animate-highlight">
+  <view class="metric-card__top">
+    <view class="metric-card__name">{{metric.metricName}}</view>
+    <status-tag text="{{metric.statusText}}" tone="{{tone}}" />
+  </view>
+  <view class="metric-card__value">{{metric.value}} <text>{{metric.unit}}</text></view>
+  <view class="metric-card__range">参考范围：{{metric.referenceRange}}</view>
+  <view class="metric-card__explain" wx:if="{{metric.plainLanguageExplanation}}">{{metric.plainLanguageExplanation}}</view>
+  <view class="metric-card__suggestion" wx:if="{{metric.nextSuggestion}}">建议：{{metric.nextSuggestion}}</view>
+  <view class="metric-card__actions" wx:if="{{showActions}}">
+    <button class="metric-card__link" bindtap="handleEdit">编辑</button>
+    <button class="metric-card__link metric-card__link--muted" bindtap="handleIgnore">忽略</button>
+  </view>
+</view>

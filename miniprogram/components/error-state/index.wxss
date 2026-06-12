@@ -1,0 +1,35 @@
+.error-state {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.error-state__mark {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  background: rgba(232, 121, 109, 0.16);
+  color: #A64237;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-state__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.error-state__title {
+  font-size: var(--font-card-title);
+  font-weight: 700;
+}
+
+.error-state__description {
+  margin: 6px 0 14px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  line-height: 1.55;
+}

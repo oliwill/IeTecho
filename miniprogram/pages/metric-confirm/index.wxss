@@ -1,0 +1,17 @@
+.confirm-copy {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  line-height: 1.55;
+}
+
+.add-metric {
+  margin-top: var(--space-4);
+  min-height: 44px;
+  width: 100%;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+  font-size: var(--font-body);
+  font-weight: 800;
+}

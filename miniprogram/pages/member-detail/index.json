@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "成员档案",
+  "usingComponents": {
+    "family-profile-card": "../../components/family-profile-card/index",
+    "health-status-ring": "../../components/health-status-ring/index",
+    "report-summary-card": "../../components/report-summary-card/index",
+    "trend-chart-card": "../../components/trend-chart-card/index",
+    "reminder-card": "../../components/reminder-card/index"
+  }
+}

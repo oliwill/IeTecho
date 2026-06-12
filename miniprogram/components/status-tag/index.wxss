@@ -1,0 +1,43 @@
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  box-sizing: border-box;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-caption);
+  line-height: 1.2;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-tag--normal {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+}
+
+.status-tag--attention {
+  background: rgba(242, 166, 90, 0.16);
+  color: #9C5B19;
+}
+
+.status-tag--warning {
+  background: rgba(232, 121, 109, 0.16);
+  color: #A64237;
+}
+
+.status-tag--info {
+  background: rgba(107, 167, 216, 0.18);
+  color: #356F9A;
+}
+
+.status-tag--done {
+  background: rgba(124, 191, 122, 0.18);
+  color: #3E7F3B;
+}
+
+.status-tag--default {
+  background: var(--color-surface-soft);
+  color: var(--color-text-secondary);
+}

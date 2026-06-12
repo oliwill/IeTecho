@@ -1,0 +1,14 @@
+<view class="reminder-card card">
+  <view class="reminder-card__top">
+    <view>
+      <view class="reminder-card__title">{{reminder.memberName}}｜{{reminder.title}}</view>
+      <view class="reminder-card__time">{{reminder.displayTime}}</view>
+    </view>
+    <status-tag text="{{reminder.typeLabel}}" tone="{{tone}}" />
+  </view>
+  <view class="reminder-card__note" wx:if="{{reminder.note}}">{{reminder.note}}</view>
+  <view class="reminder-card__actions" wx:if="{{showActions}}">
+    <button class="reminder-card__button" bindtap="handleDone">完成</button>
+    <button class="reminder-card__button reminder-card__button--muted" bindtap="handleReschedule">改期</button>
+  </view>
+</view>

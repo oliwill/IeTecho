@@ -1,0 +1,41 @@
+.focus-card__eyebrow {
+  color: var(--color-primary-deep);
+  font-size: var(--font-caption);
+  font-weight: 800;
+}
+
+.focus-card__title {
+  margin-top: var(--space-2);
+  font-size: 22px;
+  line-height: 1.28;
+  font-weight: 800;
+  letter-spacing: -0.012em;
+}
+
+.focus-card__desc {
+  margin-top: var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-body);
+  line-height: 1.55;
+}
+
+.focus-card__action {
+  margin-top: var(--space-4);
+  color: var(--color-primary-deep);
+  font-size: var(--font-body);
+  font-weight: 800;
+}
+
+.text-link {
+  min-height: 40px;
+  color: var(--color-primary-deep);
+  font-size: var(--font-body-small);
+  font-weight: 700;
+}
+
+.quick-actions__buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}

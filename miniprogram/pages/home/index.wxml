@@ -1,0 +1,54 @@
+<view class="page-shell home-page">
+  <view class="page-title">家庭健康总览</view>
+  <view class="page-subtitle">今天先看最需要关注的人和下一步行动。</view>
+
+  <view class="section" wx:if="{{isFirstUse}}">
+    <empty-state
+      mark="＋"
+      title="先建立你的健康档案"
+      description="上传一份体检报告，先看懂重点，再持续追踪指标变化。"
+      action-text="上传我的体检报告"
+      bind:action="goUpload"
+    />
+  </view>
+
+  <block wx:else>
+    <view class="section">
+      <view class="focus-card card card-soft animate-card-enter tap-scale" bindtap="goMemberDetail">
+        <view class="focus-card__eyebrow">今日重点</view>
+        <view class="focus-card__title">{{dashboard.todayFocus.memberName}}｜{{dashboard.todayFocus.title}}</view>
+        <view class="focus-card__desc">{{dashboard.todayFocus.description}}</view>
+        <view class="focus-card__action">{{dashboard.todayFocus.nextAction}}</view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-header">
+        <view class="section-title">待办提醒</view>
+        <button class="text-link" bindtap="showMock">查看全部</button>
+      </view>
+      <view class="stack-12">
+        <reminder-card wx:for="{{dashboard.reminders}}" wx:key="id" reminder="{{item}}" show-actions="{{true}}" />
+      </view>
+    </view>
+
+    <view class="section">
+      <trend-chart-card items="{{dashboard.trendSummaries}}" status-text="趋势摘要" tone="info" />
+    </view>
+
+    <view class="section">
+      <view class="section-header">
+        <view class="section-title">最近报告</view>
+      </view>
+      <report-summary-card report="{{dashboard.recentReport}}" bind:open="goReportResult" />
+    </view>
+
+    <view class="section quick-actions card">
+      <view class="section-title">快捷操作</view>
+      <view class="quick-actions__buttons">
+        <app-button variant="primary" bind:tapbutton="goUpload">上传报告</app-button>
+        <app-button variant="secondary" bind:tapbutton="goFamily">查看家人</app-button>
+      </view>
+    </view>
+  </block>
+</view>
