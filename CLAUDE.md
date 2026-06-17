@@ -2,7 +2,9 @@
 
 ## 项目定位
 
-IeTecho 是一个家庭健康档案与体检报告解读微信小程序项目。
+IeTecho 是一个家庭健康档案与体检报告解读产品。
+
+平台策略：微信小程序先行（自用验证与早期产品化），iOS App 后续（完美实现设计语言）。两阶段都真实落地。详见 `docs/plans/2026-06-17-platform-decision.md`。
 
 核心目标：
 
@@ -13,6 +15,24 @@ IeTecho 是一个家庭健康档案与体检报告解读微信小程序项目。
 → 保存到家人健康档案
 → 首页展示今日重点、趋势和复查提醒
 ```
+
+## 平台策略与三层分离（架构硬约束）
+
+小程序不是最终形态，iOS 是既定第二阶段。为控制迁移成本，架构强制三层分离：
+
+```text
+┌─ UI 层      pages/ + components/        iOS 时重写（必然）
+├─ Service 层 services/*.ts               iOS 时换实现，接口不变
+└─ 后端层     cloudfunctions/             iOS 时搬到独立后端，Node 逻辑大量复用
+```
+
+必须遵守：
+
+- 页面绝不直接调用 `wx.cloud.database()` 或 `wx.cloud.callFunction()`，所有数据访问收口到 `miniprogram/services/`。
+- 云函数用纯 Node 写业务逻辑，不耦合微信特有能力。
+- 数据模型平台无关，不依赖微信 `_openid` 作唯一用户标识，预留自有 user id 字段。
+- 数据迁移用 JSON 导出导入，不做实时同步或账号打通。`exportService` 是 iOS 迁移前置依赖，必须实现。
+- 不做 Taro / uni-app 多端方案。两个端分别原生实现。
 
 ## 当前阶段
 
@@ -62,8 +82,9 @@ miniprogram/
 ├─ app.json              # 页面和 Tab 配置
 ├─ app.ts                # 小程序入口，静态 Mock 阶段不初始化云开发
 ├─ app.wxss              # 全局样式入口
-├─ pages/                # 页面
-├─ components/           # 组件
+├─ pages/                # 页面（UI 层）
+├─ components/           # 组件（UI 层）
+├─ services/             # 数据访问收口层，UI 唯一数据入口（Service 层）
 ├─ styles/               # WXSS token、布局、动效
 ├─ models/               # TypeScript 数据类型
 ├─ data/                 # mock 数据
@@ -155,14 +176,16 @@ Dashboard       首页聚合数据
 P1 建议顺序：
 
 1. 先用微信开发者工具确认静态 Mock 编译通过。
-2. 替换真实小程序 AppID。
-3. 启用微信云开发。
-4. 实现微信登录和默认「我」。
-5. 建立云数据库集合：`members`、`reports`、`metric_records`、`reminders`、`interpretations`。
-6. 接入云存储上传报告文件。
-7. 实现 AI 解读云函数。
-8. 实现指标确认后入库。
-9. 实现小程序内提醒管理。
+2. 建立 `miniprogram/services/`，把页面读 mock 的逻辑下沉到 service。
+3. 替换真实小程序 AppID。
+4. 启用微信云开发。
+5. 实现微信登录和默认「我」（预留自有 user id 字段）。
+6. 建立云数据库集合：`members`、`reports`、`metric_records`、`reminders`、`interpretations`。
+7. 接入云存储上传报告文件。
+8. 实现 AI 解读云函数（纯 Node，业务逻辑可复用）。
+9. 实现指标确认后入库。
+10. 实现小程序内提醒管理。
+11. 实现 `exportService` 数据导出（iOS 迁移前置）。
 
 不要在 P1 抢先做：
 
@@ -178,14 +201,16 @@ P1 建议顺序：
 优先阅读：
 
 1. `README.md`
-2. `docs/prd-family-health-miniapp-project-management.md`
-3. `docs/plans/2026-06-12-family-health-miniapp-design.md`
-4. `docs/wireframes/family-health-miniapp-page-prototype.md`
-5. `docs/wireframes/family-health-miniapp-state-matrix.md`
-6. `docs/design/family-health-miniapp-components.md`
-7. `docs/design/family-health-miniapp-visual-system.md`
-8. `docs/design/family-health-miniapp-motion-spec.md`
-9. `docs/plans/2026-06-12-family-health-miniapp-prototype-implementation.md`
+2. `docs/plans/2026-06-17-platform-decision.md`
+3. `docs/architecture.md`
+4. `docs/prd-family-health-miniapp-project-management.md`
+5. `docs/plans/2026-06-12-family-health-miniapp-design.md`
+6. `docs/wireframes/family-health-miniapp-page-prototype.md`
+7. `docs/wireframes/family-health-miniapp-state-matrix.md`
+8. `docs/design/family-health-miniapp-components.md`
+9. `docs/design/family-health-miniapp-visual-system.md`
+10. `docs/design/family-health-miniapp-motion-spec.md`
+11. `docs/plans/2026-06-12-family-health-miniapp-prototype-implementation.md`
 
 ## 提交注意事项
 

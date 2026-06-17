@@ -1,12 +1,15 @@
 # IeTecho
 
-IeTecho 是一个家庭健康档案与体检报告解读微信小程序项目，目标是帮助用户看懂体检报告 / 化验单、管理家人健康档案、持续追踪重点指标，并做好复查、复诊和生活方式提醒。
+IeTecho 是一个家庭健康档案与体检报告解读产品，目标是帮助用户看懂体检报告 / 化验单、管理家人健康档案、持续追踪重点指标，并做好复查、复诊和生活方式提醒。
+
+平台策略：微信小程序先行（自用验证与早期产品化），iOS App 后续（完美实现设计语言）。两阶段都真实落地。详见 `docs/plans/2026-06-17-platform-decision.md`。
 
 ## 当前阶段
 
-截至 2026-06-12，项目处于 **P0 静态 Mock 阶段**：
+截至 2026-06-17，项目处于 **P0 静态 Mock 阶段**：
 
-- 已完成产品设计、页面原型、状态矩阵、视觉系统、动效规范和 PRD。
+- 已完成产品设计、页面原型、状态矩阵、视觉系统、动效规范、PRD 和平台决策。
+- 已确认三层分离架构（UI / Service / 后端），数据访问收口到 `miniprogram/services/`。
 - 已创建可由微信开发者工具打开的原生微信小程序静态工程。
 - 当前不接微信云开发、不接 AI API、不做真实上传、不接 OCR、不接 ECharts、不接 Lottie。
 
@@ -29,7 +32,7 @@ IeTecho 是一个家庭健康档案与体检报告解读微信小程序项目，
 ```text
 IeTecho/
 ├─ docs/
-│  ├─ plans/       # 产品设计与实施计划
+│  ├─ plans/       # 产品设计、实施计划、平台决策
 │  ├─ wireframes/  # 页面原型与状态矩阵
 │  ├─ design/      # 组件、视觉系统、动效规范
 │  └─ prd-family-health-miniapp-project-management.md
@@ -37,8 +40,9 @@ IeTecho/
 │  ├─ app.json
 │  ├─ app.ts
 │  ├─ app.wxss
-│  ├─ pages/
-│  ├─ components/
+│  ├─ pages/       # 页面（UI 层）
+│  ├─ components/  # 组件（UI 层）
+│  ├─ services/    # 数据访问收口层（Service 层，待建）
 │  ├─ styles/
 │  ├─ models/
 │  ├─ data/
@@ -103,14 +107,15 @@ trend-chart-card
 
 建议按以下顺序阅读：
 
-1. `docs/prd-family-health-miniapp-project-management.md` — 项目管理 PRD，适合开发交接。
-2. `docs/plans/2026-06-12-family-health-miniapp-design.md` — 产品设计总文档。
-3. `docs/wireframes/family-health-miniapp-page-prototype.md` — 页面结构和流转。
-4. `docs/wireframes/family-health-miniapp-state-matrix.md` — 页面状态覆盖。
-5. `docs/design/family-health-miniapp-visual-system.md` — 视觉 token 和设计原则。
-6. `docs/design/family-health-miniapp-components.md` — 核心组件规格。
-7. `docs/design/family-health-miniapp-motion-spec.md` — 动效边界。
-8. `docs/plans/2026-06-12-family-health-miniapp-prototype-implementation.md` — 静态 Mock 转实现计划。
+1. `docs/plans/2026-06-17-platform-decision.md` — 平台决策（小程序先行 → iOS），三层分离架构。
+2. `docs/prd-family-health-miniapp-project-management.md` — 项目管理 PRD，适合开发交接。
+3. `docs/plans/2026-06-12-family-health-miniapp-design.md` — 产品设计总文档。
+4. `docs/wireframes/family-health-miniapp-page-prototype.md` — 页面结构和流转。
+5. `docs/wireframes/family-health-miniapp-state-matrix.md` — 页面状态覆盖。
+6. `docs/design/family-health-miniapp-visual-system.md` — 视觉 token 和设计原则。
+7. `docs/design/family-health-miniapp-components.md` — 核心组件规格。
+8. `docs/design/family-health-miniapp-motion-spec.md` — 动效边界。
+9. `docs/plans/2026-06-12-family-health-miniapp-prototype-implementation.md` — 静态 Mock 转实现计划。
 
 ## P0 验收路径
 
@@ -140,14 +145,18 @@ P1 目标：把静态 Mock 变成可持久化的最小可用版本。
 
 建议顺序：
 
-1. 替换真实小程序 AppID。
-2. 启用微信云开发环境。
-3. 实现微信登录和默认「我」。
-4. 建立云数据库集合：`members`、`reports`、`metric_records`、`reminders`、`interpretations`。
-5. 接入云存储上传报告文件。
-6. 实现 AI 解读云函数。
-7. 实现指标确认后入库。
-8. 实现小程序内提醒管理。
+1. 建立 `miniprogram/services/`，把页面读 mock 的逻辑下沉到 service（三层分离前置）。
+2. 替换真实小程序 AppID。
+3. 启用微信云开发环境。
+4. 实现微信登录和默认「我」（预留自有 user id 字段，不依赖 `_openid`）。
+5. 建立云数据库集合：`members`、`reports`、`metric_records`、`reminders`、`interpretations`。
+6. 接入云存储上传报告文件。
+7. 实现 AI 解读云函数（纯 Node，业务逻辑可复用）。
+8. 实现指标确认后入库。
+9. 实现小程序内提醒管理。
+10. 实现 `exportService` 数据导出（iOS 迁移前置）。
+
+接入云开发时只替换 `services/` 内部实现，页面和组件不动。
 
 P1 仍不建议先做：多人共享、医生端、社区、药品管理、复杂健康评分。
 

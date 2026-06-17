@@ -8,11 +8,13 @@
 
 项目已完成从产品构想到 P0 静态 Mock 的第一轮闭环：
 
-1. 产品定位已确认：家庭体检报告解读与健康指标追踪微信小程序。
-2. 信息架构已确认：底部 Tab 为 `首页 / 家人 / 更多`。
-3. 页面原型、状态矩阵、组件规格、视觉系统、动效规范已落文档。
-4. qiaomu-ai-prd 风格项目管理 PRD 已生成并通过 lint。
-5. 原生微信小程序静态 Mock 已创建并推送。
+1. 产品定位已确认：家庭体检报告解读与健康指标追踪产品。
+2. 平台策略已确认：微信小程序先行（自用验证），iOS App 后续（完美实现设计语言）。见 `docs/plans/2026-06-17-platform-decision.md`。
+3. 信息架构已确认：底部 Tab 为 `首页 / 家人 / 更多`。
+4. 架构原则已确认：三层分离（UI / Service / 后端），数据访问收口到 `miniprogram/services/`，数据迁移用 JSON 导出导入。
+5. 页面原型、状态矩阵、组件规格、视觉系统、动效规范已落文档。
+6. qiaomu-ai-prd 风格项目管理 PRD 已生成并通过 lint。
+7. 原生微信小程序静态 Mock 已创建并推送。
 
 远程仓库：
 
@@ -41,6 +43,7 @@ docs/handoff.md
 
 ```text
 docs/prd-family-health-miniapp-project-management.md
+docs/plans/2026-06-17-platform-decision.md
 docs/plans/2026-06-12-family-health-miniapp-design.md
 docs/plans/2026-06-12-family-health-miniapp-prototype-implementation.md
 docs/wireframes/family-health-miniapp-page-prototype.md
@@ -114,12 +117,15 @@ P1 目标是把静态 Mock 变成可持久化的最小可用版本。
 
 1. 替换真实小程序 AppID。
 2. 启用微信云开发环境。
-3. 实现微信登录和默认「我」。
+3. 实现微信登录和默认「我」（预留自有 user id 字段，不依赖 `_openid` 做唯一标识）。
 4. 建立云数据库集合：`members`、`reports`、`metric_records`、`reminders`、`interpretations`。
 5. 接入云存储上传报告文件。
-6. 实现 AI 解读云函数。
+6. 实现 AI 解读云函数（纯 Node，业务逻辑可复用）。
 7. 实现指标确认后入库。
 8. 实现小程序内提醒管理。
+9. 实现 `exportService` 数据导出（iOS 迁移前置）。
+
+接入云开发时只替换 `services/` 内部实现，页面和组件不动。三层分离是硬约束，详见 `docs/architecture.md`。
 
 ## 当前未解决问题
 

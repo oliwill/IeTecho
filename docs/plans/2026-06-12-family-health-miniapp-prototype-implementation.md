@@ -47,6 +47,8 @@ IeTecho/
 
 不要一开始做复杂 monorepo。除非后续同时做 H5、管理后台或多端复用，再考虑 `apps/wechat-miniapp/` 结构。
 
+`miniprogram/services/` 不是可选项，是三层分离架构硬约束。所有数据访问必须收口到 service 层，页面不直接接触云开发或 mock 数据。详见 `docs/plans/2026-06-17-platform-decision.md` 和 `docs/architecture.md`。
+
 ## 4. 开发前必须确认
 
 | 项目 | 决策 |
@@ -140,15 +142,19 @@ FamilyProfileCard > MetricAnnotationCard > ReportSummaryCard > ReminderCard > Tr
 2. 配置 3 Tab：首页 / 家人 / 更多
 3. 建立全局视觉 token
 4. 准备 mock 数据
-5. 首页静态 mock
-6. 家人页静态 mock
-7. 成员详情静态 mock
-8. 报告上传静态页
-9. 解读中静态状态
-10. 报告解读结果静态页
-11. 指标确认静态页
-12. 更多页静态页
+5. 建立 services/ 层，mock 数据作为临时数据源收口到 service
+6. 页面改为调用 service，不直接读 data/
+7. 首页静态 mock
+8. 家人页静态 mock
+9. 成员详情静态 mock
+10. 报告上传静态页
+11. 解读中静态状态
+12. 报告解读结果静态页
+13. 指标确认静态页
+14. 更多页静态页
 ```
+
+第 5、6 步是三层分离的前置工作。静态 Mock 阶段就建立 service 层，确保后续接云函数时只改 service 内部实现，页面不动。
 
 ### Phase 2：本地交互闭环
 
@@ -168,8 +174,10 @@ FamilyProfileCard > MetricAnnotationCard > ReportSummaryCard > ReminderCard > Tr
 
 目标：持久化数据。
 
+接入时只替换 `services/` 内部实现，页面和组件不动。
+
 ```text
-1. 微信登录
+1. 微信登录（预留自有 user id 字段，不依赖 _openid 做唯一标识）
 2. 默认创建「我」
 3. 云数据库集合：members
 4. 云数据库集合：reports
@@ -177,8 +185,10 @@ FamilyProfileCard > MetricAnnotationCard > ReportSummaryCard > ReminderCard > Tr
 6. 云数据库集合：reminders
 7. 云数据库集合：interpretations
 8. 云存储上传报告文件
-9. 首页 getDashboard 云函数
+9. 首页 getDashboard 云函数（纯 Node）
 ```
+
+云函数坚持纯 Node 写业务逻辑，不耦合微信特有能力，为 iOS 阶段复用做准备。
 
 ### Phase 4：AI 解读接入
 
