@@ -58,7 +58,7 @@ IeTecho/
 2. 导入项目目录：`E:/Git/ClaudeCode/IeTecho`。
 3. 小程序源码目录：`miniprogram/`。
 4. 当前 `project.config.json` 使用 `touristappid`，正式开发前需要替换为实际小程序 AppID。
-5. 编译后应看到底部 Tab：`首页 / 家人 / 更多`。
+5. 编译后应看到底部 Tab：`首页 / 家人 / 报告 / 我的`。
 
 ## 当前页面
 
