@@ -7,7 +7,7 @@
     <button class="family-page__add tap-scale" bindtap="goEdit">＋</button>
   </view>
 
-  <view class="section" wx:if="{{isFirstUse}}">
+  <view class="section" wx:if="{{isFirstUse && firstUseMember}}">
     <family-profile-card member="{{firstUseMember}}" bind:open="goUpload" />
     <view class="section">
       <empty-state
@@ -21,7 +21,7 @@
     </view>
   </view>
 
-  <view class="section stack-12" wx:else>
+  <view class="section stack-12" wx:elif="{{members}}">
     <family-profile-card
       wx:for="{{members}}"
       wx:key="id"

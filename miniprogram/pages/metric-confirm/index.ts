@@ -1,13 +1,19 @@
-import { metricRecords } from '../../data/mock-metrics'
+import { metricService } from '../../services'
+import type { MetricRecord } from '../../models/metric'
 import { navigateTo, showMockToast } from '../../utils/route'
 
 Page({
   data: {
-    metrics: metricRecords
+    metrics: null as MetricRecord[] | null
   },
-  ignoreMetric(event: any) {
+  async onLoad() {
+    const metrics = await metricService.list()
+    this.setData({ metrics })
+  },
+  async ignoreMetric(event: any) {
     const metricId = event.detail?.metricId
-    const metrics = this.data.metrics.map(item => item.id === metricId ? { ...item, confirmationState: 'ignored', statusText: '已忽略' } : item)
+    if (!metricId) return
+    const metrics = await metricService.updateConfirmation(metricId, 'ignored')
     this.setData({ metrics })
     showMockToast('已在本地标记忽略')
   },

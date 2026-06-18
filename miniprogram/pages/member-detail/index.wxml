@@ -1,4 +1,5 @@
 <view class="page-shell detail-page">
+  <block wx:if="{{member}}">
   <family-profile-card member="{{member}}" />
 
   <view class="section">
@@ -35,4 +36,5 @@
     <view class="history-item">2026.06.01｜体检报告｜待确认指标</view>
     <view class="history-item">2026.03.12｜门诊记录｜血压记录</view>
   </view>
+  </block>
 </view>

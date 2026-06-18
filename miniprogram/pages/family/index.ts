@@ -1,16 +1,18 @@
-import { firstUseMember, members } from '../../data/mock-members'
+import { memberService } from '../../services'
+import type { Member } from '../../models/member'
 import { navigateTo } from '../../utils/route'
 
 Page({
   data: {
     isFirstUse: false,
-    firstUseMember,
-    members
+    firstUseMember: null as Member | null,
+    members: null as Member[] | null
   },
-  onLoad(options) {
-    if (options?.scenario === 'firstUse') {
-      this.setData({ isFirstUse: true })
-    }
+  async onLoad(options) {
+    const isFirstUse = options?.scenario === 'firstUse'
+    const firstUseMember = await memberService.getFirstUseMember()
+    const members = await memberService.list()
+    this.setData({ isFirstUse, firstUseMember, members })
   },
   goUpload() {
     navigateTo('/pages/report-upload/index')

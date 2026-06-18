@@ -1,16 +1,17 @@
-import { dashboard, firstUseDashboard } from '../../data/mock-dashboard'
+import { dashboardService } from '../../services'
+import type { Dashboard } from '../../models/scenario'
 import { navigateTo, showMockToast, switchTab } from '../../utils/route'
 
 Page({
   data: {
     // 切换为 true 可查看首次使用空态。
     isFirstUse: false,
-    dashboard
+    dashboard: null as Dashboard | null
   },
-  onLoad(options) {
-    if (options?.scenario === 'firstUse') {
-      this.setData({ isFirstUse: true, dashboard: firstUseDashboard })
-    }
+  async onLoad(options) {
+    const isFirstUse = options?.scenario === 'firstUse'
+    const dashboard = isFirstUse ? await dashboardService.getFirstUse() : await dashboardService.get()
+    this.setData({ isFirstUse, dashboard })
   },
   goUpload() {
     navigateTo('/pages/report-upload/index')

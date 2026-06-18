@@ -1,4 +1,4 @@
-import { disclaimer } from '../../data/mock-interpretations'
+import { interpretationService } from '../../services'
 import { showMockToast } from '../../utils/route'
 
 Page({
@@ -19,7 +19,8 @@ Page({
       showCancel: false
     })
   },
-  showDisclaimer() {
+  async showDisclaimer() {
+    const disclaimer = await interpretationService.getDisclaimer()
     wx.showModal({
       title: '免责声明',
       content: disclaimer,

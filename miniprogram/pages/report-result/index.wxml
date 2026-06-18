@@ -2,6 +2,7 @@
   <view class="page-title">报告解读</view>
   <view class="page-subtitle">2026-06-01｜我的体检报告</view>
 
+  <block wx:if="{{interpretation}}">
   <view class="section card card-soft">
     <view class="section-title">报告摘要</view>
     <view class="result-copy">{{interpretation.summary}}</view>
@@ -48,4 +49,5 @@
   <view class="section">
     <app-button variant="primary" bind:tapbutton="goConfirm">确认关键指标并保存</app-button>
   </view>
+  </block>
 </view>

@@ -12,7 +12,7 @@
     />
   </view>
 
-  <block wx:else>
+  <block wx:elif="{{dashboard}}">
     <view class="section">
       <view class="focus-card card card-soft animate-card-enter tap-scale" bindtap="goMemberDetail">
         <view class="focus-card__eyebrow">今日重点</view>
