@@ -1,0 +1,33 @@
+<view class="page-shell reports-page">
+  <view class="page-title">报告</view>
+  <view class="page-subtitle">家人的体检报告和化验单，集中在这里查看和解读。</view>
+
+  <block wx:if="{{loading}}">
+    <view class="card loading-card">正在整理报告列表…</view>
+  </block>
+
+  <block wx:elif="{{reports.length === 0}}">
+    <view class="card empty-card">
+      <view class="empty-title">还没有上传过报告</view>
+      <view class="empty-desc">上传一份体检报告，可以在这里持续追踪解读和指标确认。</view>
+      <button class="btn-primary" bindtap="tapUpload">上传我的体检报告</button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="section">
+      <view class="report-item card" wx:for="{{reports}}" wx:key="id" data-id="{{item.id}}" bindtap="tapReport">
+        <view class="report-row">
+          <view class="report-doc">解</view>
+          <view class="report-main">
+            <view class="report-title">{{item.title}}</view>
+            <view class="report-meta">{{item.memberName}} · {{item.reportDate}}</view>
+          </view>
+          <view class="report-status">{{item.statusLabel}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <button class="btn-primary fab" bindtap="tapUpload">+ 上传新报告</button>
+</view>

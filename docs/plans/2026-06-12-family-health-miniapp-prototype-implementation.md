@@ -139,7 +139,7 @@ FamilyProfileCard > MetricAnnotationCard > ReportSummaryCard > ReminderCard > Tr
 
 ```text
 1. 初始化小程序工程
-2. 配置 3 Tab：首页 / 家人 / 更多
+2. 配置 4 Tab：首页 / 家人 / 报告 / 我的
 3. 建立全局视觉 token
 4. 准备 mock 数据
 5. 建立 services/ 层，mock 数据作为临时数据源收口到 service
@@ -394,7 +394,7 @@ AI 解读输出固定结构：
 
 ```text
 1. 小程序工程初始化
-2. 3 Tab 页面壳
+2. 4 Tab 页面壳
 3. 视觉 token
 4. mock 数据
 5. 首页静态 mock

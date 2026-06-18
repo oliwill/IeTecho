@@ -3,12 +3,14 @@
 ## 1. 视觉方向
 
 ```text
-方向名称：温润健康管家
+方向名称：温润健康管家（深绿体系）
 关键词：温润、健康、可信、低压力、长期陪伴、中老年友好
 视觉记忆点：家人档案卡
 ```
 
 本视觉系统用于体检报告 / 化验单解读和家庭健康档案管理微信小程序。界面应降低用户面对异常指标时的焦虑，同时保持可信和清晰。
+
+> 配色体系于 2026-06-18 经 OpenDesign 设计稿确认，由青绿（#35AFA0）调整为深绿（#4f7765），更沉稳自然。深绿体系以 `miniprogram/styles/tokens.wxss` 为唯一真源。
 
 ## 2. 设计原则
 
@@ -25,38 +27,38 @@
 
 | Token | 色值 | 用途 |
 |---|---|---|
-| `--color-primary` | `#35AFA0` | 主按钮、选中态、平稳状态 |
-| `--color-primary-deep` | `#1F7F76` | 深色文字、重要强调 |
-| `--color-primary-soft` | `#EAF8F5` | 浅青背景、轻状态底色 |
-| `--color-primary-muted` | `#CFEDEA` | 图表参考区间、弱强调 |
+| `--color-primary` | `#4f7765` | 主按钮、选中态、平稳状态 |
+| `--color-primary-deep` | `#36594c` | 深色文字、重要强调 |
+| `--color-primary-soft` | `#e7f1ec` | 浅绿背景、轻状态底色 |
+| `--color-primary-muted` | `#d5e2d5` | 图表参考区间、弱强调 |
 
 ### 3.2 页面和表面
 
 | Token | 色值 | 用途 |
 |---|---|---|
-| `--color-page` | `#F8F6F1` | 页面暖白背景 |
-| `--color-surface` | `#FFFFFF` | 主要卡片 |
-| `--color-surface-soft` | `#F1F5F6` | 次级卡片、输入背景 |
-| `--color-surface-warm` | `#FFFDF8` | 首次使用引导卡 |
+| `--color-page` | `#e7efec` | 页面冷灰绿背景 |
+| `--color-surface` | `#fffdf8` | 主要卡片（暖白） |
+| `--color-surface-soft` | `#e2eee8` | 次级卡片、输入背景 |
+| `--color-surface-warm` | `#fffdf8` | 首次使用引导卡 |
 
 ### 3.3 文本
 
 | Token | 色值 | 用途 |
 |---|---|---|
-| `--color-text-primary` | `#263238` | 主文本 |
-| `--color-text-secondary` | `#5F7377` | 次级文本 |
-| `--color-text-muted` | `#8EA0A3` | 辅助说明 |
-| `--color-text-inverse` | `#FFFFFF` | 深色按钮文本 |
+| `--color-text-primary` | `#32443c` | 主文本 |
+| `--color-text-secondary` | `#587066` | 次级文本 |
+| `--color-text-muted` | `#8ea399` | 辅助说明 |
+| `--color-text-inverse` | `#ffffff` | 深色按钮文本 |
 
 ### 3.4 状态色
 
 | 状态 | Token | 色值 | 用途 |
 |---|---|---|---|
-| 平稳 / 正常 | `--color-status-normal` | `#35AFA0` | 正常标签、趋势线 |
-| 关注 / 提醒 | `--color-status-attention` | `#F2A65A` | 关注标签、今日提醒 |
-| 异常 / 警示 | `--color-status-warning` | `#E8796D` | 明确异常、逾期提醒 |
-| 信息 / AI 解读 | `--color-status-info` | `#6BA7D8` | AI 解读状态 |
-| 完成 | `--color-status-done` | `#7CBF7A` | 已完成提醒 |
+| 平稳 / 正常 | `--color-status-normal` | `#4f7765` | 正常标签、趋势线 |
+| 关注 / 提醒 | `--color-status-attention` | `#d9a35b` | 关注标签、今日提醒 |
+| 异常 / 警示 | `--color-status-warning` | `#c96f5f` | 明确异常、逾期提醒 |
+| 信息 / AI 解读 | `--color-status-info` | `#7aa6ad` | AI 解读状态 |
+| 完成 | `--color-status-done` | `#789b67` | 已完成提醒 |
 
 ### 3.5 色彩边界
 
@@ -79,8 +81,8 @@
 
 | Token | 建议值 | 用途 |
 |---|---:|---|
-| `--font-page-title` | 23px | 页面标题 |
-| `--font-section-title` | 19px | 模块标题 |
+| `--font-page-title` | 24px | 页面标题 |
+| `--font-section-title` | 20px | 模块标题 |
 | `--font-card-title` | 18px | 卡片主标题 |
 | `--font-body` | 16px | 正文、关键说明 |
 | `--font-body-small` | 15px | 次正文 |
@@ -171,7 +173,7 @@
 高度：44-48px
 圆角：14-18px
 字号：16px
-背景：#35AFA0
+背景：#4f7765
 文字：#FFFFFF
 ```
 
@@ -181,8 +183,8 @@
 
 ```text
 高度：44px
-背景：#EAF8F5 或 #F1F5F6
-文字：#1F7F76 或 #263238
+背景：#e7f1ec 或 #e2eee8
+文字：#36594c 或 #32443c
 ```
 
 用途：完善基础信息、先保存不解读、稍后查看。
@@ -232,7 +234,7 @@
 MVP 可用关系色块替代真实头像：
 
 ```text
-我：青绿
+我：深绿
 父亲：蓝灰
 母亲：暖橙
 伴侣：浅紫灰
@@ -267,10 +269,10 @@ MVP 可用关系色块替代真实头像：
 
 | 用途 | 色值 |
 |---|---|
-| 正常趋势线 | `#35AFA0` |
-| 关注趋势线 | `#F2A65A` |
-| 异常点 | `#E8796D` |
-| 参考范围 | `#EAF8F5` |
+| 正常趋势线 | `#4f7765` |
+| 关注趋势线 | `#d9a35b` |
+| 异常点 | `#c96f5f` |
+| 参考范围 | `#e7f1ec` |
 | 网格线 | `rgba(38, 50, 56, 0.08)` |
 | 坐标文字 | `#6B7C80` |
 

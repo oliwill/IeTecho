@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>我家手帖 / IeTehco 小程序视觉稿</title>
+  <style>
+    :root {
+      --bg: oklch(97.4% 0.014 91.1);
+      --surface: oklch(100% 0 0);
+      --fg: oklch(30.1% 0.023 221.2);
+      --muted: oklch(51.3% 0.035 208.4);
+      --border: oklch(91.7% 0.014 202.1);
+      --accent: oklch(67.9% 0.108 184.2);
+      --teal-dark: #1f7f76;
+      --teal-soft: #eaf8f5;
+      --lake: #6ba7d8;
+      --moss: #7cbf7a;
+      --sand: #fffdf8;
+      --warm: #f2a65a;
+      --coral: #e8796d;
+      --font-display: 'Iowan Old Style', 'Songti SC', 'Noto Serif SC', Georgia, serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      --font-mono: 'SFMono-Regular', ui-monospace, Menlo, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--fg);
+      font-family: var(--font-body);
+      background:
+        radial-gradient(circle at 14% 18%, rgba(124, 191, 122, .18), transparent 30%),
+        radial-gradient(circle at 82% 10%, rgba(107, 167, 216, .16), transparent 26%),
+        var(--bg);
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .28;
+      background-image:
+        radial-gradient(rgba(38, 50, 56, .08) .55px, transparent .65px),
+        radial-gradient(rgba(255, 255, 255, .55) .55px, transparent .65px);
+      background-position: 0 0, 7px 9px;
+      background-size: 18px 18px;
+      mix-blend-mode: multiply;
+    }
+    .wrap {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 56px 0;
+    }
+    header {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 32px;
+      align-items: end;
+      margin-bottom: 32px;
+    }
+    .kicker {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: .16em;
+      color: var(--teal-dark);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(42px, 6vw, 80px);
+      line-height: .96;
+      letter-spacing: -.04em;
+      text-wrap: balance;
+    }
+    .lede {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+      max-width: 34em;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .card {
+      position: relative;
+      overflow: hidden;
+      min-height: 360px;
+      padding: 24px;
+      border: 0;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, .82);
+      box-shadow: 0 10px 18px rgba(38, 50, 56, .07);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 180ms cubic-bezier(.2, 0, 0, 1), box-shadow 180ms cubic-bezier(.2, 0, 0, 1), background 180ms cubic-bezier(.2, 0, 0, 1);
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, .92);
+      box-shadow: 0 12px 24px rgba(38, 50, 56, .1);
+    }
+    .card:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 3px rgba(53, 175, 160, .24), 0 12px 24px rgba(38, 50, 56, .1);
+      outline: none;
+    }
+    .card h2 {
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-size: 34px;
+      letter-spacing: -.03em;
+    }
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+      max-width: 25em;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      margin-bottom: 18px;
+      padding: 0 12px;
+      border-radius: 999px;
+      color: var(--teal-dark);
+      background: var(--teal-soft);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .mini-phone {
+      position: absolute;
+      right: 26px;
+      bottom: -42px;
+      width: 170px;
+      height: 368px;
+      border: 8px solid #233136;
+      border-radius: 34px;
+      background: #f8f6f1;
+      box-shadow: 0 24px 54px rgba(38, 50, 56, .16);
+      transition: transform 180ms cubic-bezier(.2, 0, 0, 1);
+    }
+    .card:hover .mini-phone { transform: translateY(-2px); }
+    .island {
+      position: absolute;
+      left: 50%;
+      top: 12px;
+      width: 58px;
+      height: 18px;
+      border-radius: 999px;
+      background: #1e272b;
+      transform: translateX(-50%);
+    }
+    .scene {
+      position: absolute;
+      inset: 44px 12px 16px;
+      overflow: hidden;
+      border-radius: 22px;
+      background: #fffdf8;
+    }
+    .hill, .lake-shape, .roof, .sun, .cardline { position: absolute; }
+    .hill { left: -12px; right: -14px; bottom: 64px; height: 120px; border-radius: 55% 45% 0 0; background: #dcefdc; }
+    .lake-shape { left: 14px; right: 14px; bottom: 34px; height: 56px; border-radius: 50%; background: #d7eaf4; }
+    .roof { left: 54px; top: 86px; width: 62px; height: 46px; border-radius: 26px 26px 10px 10px; background: #2f6f65; }
+    .roof::before { content: ''; position: absolute; left: -10px; top: -15px; width: 82px; height: 28px; border-radius: 50% 50% 8px 8px; background: #7aa06a; transform: rotate(-4deg); }
+    .sun { right: 22px; top: 52px; width: 28px; height: 28px; border-radius: 50%; background: var(--warm); opacity: .72; }
+    .screen-lines { position: absolute; left: 16px; right: 16px; bottom: 40px; display: grid; gap: 8px; }
+    .cardline { position: static; height: 22px; border-radius: 10px; background: rgba(53, 175, 160, .16); }
+    .cardline:nth-child(2) { width: 76%; background: rgba(107, 167, 216, .17); }
+    .cardline:nth-child(3) { width: 58%; background: rgba(242, 166, 90, .18); }
+    .notes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+    .note {
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.64);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 28px, 520px); padding: 32px 0; }
+      header, .grid { grid-template-columns: 1fr; }
+      .card { min-height: 320px; }
+      .mini-phone { opacity: .88; right: 18px; }
+    }
+    @media (max-width: 420px) {
+      h1 { font-size: clamp(40px, 18vw, 62px); }
+      .lede { font-size: 16px; line-height: 1.65; }
+      .card { min-height: 300px; padding: 20px; }
+      .card h2 { font-size: 28px; }
+      .mini-phone { width: 142px; height: 308px; bottom: -52px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div>
+        <div class="kicker">IeTehco / 微信小程序视觉方向</div>
+        <h1>我家手帖</h1>
+      </div>
+      <p class="lede">以安静、柔软、自然的方式管理家人的健康档案。启动页建立品牌记忆，首页让用户在 3 秒内看清谁需要关注、关注什么、下一步做什么。</p>
+    </header>
+
+    <section class="grid" aria-label="界面入口">
+      <a class="card" href="splash.html">
+        <span class="badge">启动页 375 × 812</span>
+        <h2>屋檐与自然</h2>
+        <p>柔和剪纸感的屋檐、山丘、湖面和月光，作为「家」与「长期照护」的品牌视觉锚点。</p>
+        <div class="mini-phone" aria-hidden="true">
+          <div class="island"></div>
+          <div class="scene"><div class="sun"></div><div class="hill"></div><div class="lake-shape"></div><div class="roof"></div></div>
+        </div>
+      </a>
+      <a class="card" href="home.html">
+        <span class="badge">首页默认态 / 空态</span>
+        <h2>家庭健康总览</h2>
+        <p>重点卡、提醒、指标趋势、最近报告与快捷操作都压在 5 个模块内，保持中老年友好字号与点击区。</p>
+        <div class="mini-phone" aria-hidden="true">
+          <div class="island"></div>
+          <div class="scene"><div class="screen-lines"><span class="cardline"></span><span class="cardline"></span><span class="cardline"></span></div></div>
+        </div>
+      </a>
+    </section>
+
+    <div class="notes" aria-label="设计约束摘要">
+      <span class="note">主色 #35AFA0</span>
+      <span class="note">页面底 #F8F6F1</span>
+      <span class="note">卡片圆角 22px</span>
+      <span class="note">异常小面积表达</span>
+      <span class="note">最小点击区 44px</span>
+      <span class="note">首页支持空态 / 加载 / 错误 / 边界态</span>
+    </div>
+  </main>
+</body>
+</html>

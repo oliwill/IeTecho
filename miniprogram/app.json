@@ -2,6 +2,7 @@
   "pages": [
     "pages/home/index",
     "pages/family/index",
+    "pages/reports/index",
     "pages/more/index",
     "pages/member-detail/index",
     "pages/member-edit/index",
@@ -11,15 +12,15 @@
     "pages/metric-confirm/index"
   ],
   "window": {
-    "navigationBarTitleText": "家人健康档案",
-    "navigationBarBackgroundColor": "#F8F6F1",
+    "navigationBarTitleText": "我家手帖",
+    "navigationBarBackgroundColor": "#e7efec",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#F8F6F1"
+    "backgroundColor": "#e7efec"
   },
   "tabBar": {
-    "color": "#8EA0A3",
-    "selectedColor": "#1F7F76",
-    "backgroundColor": "#FFFDF8",
+    "color": "#8ea399",
+    "selectedColor": "#36594c",
+    "backgroundColor": "#fffdf8",
     "borderStyle": "white",
     "list": [
       {
@@ -31,8 +32,12 @@
         "text": "家人"
       },
       {
+        "pagePath": "pages/reports/index",
+        "text": "报告"
+      },
+      {
         "pagePath": "pages/more/index",
-        "text": "更多"
+        "text": "我的"
       }
     ]
   },
