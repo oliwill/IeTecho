@@ -1,4 +1,4 @@
-import { interpretationService, metricService } from '../../services'
+import { interpretationService, metricService } from '../../services/index'
 import type { Interpretation } from '../../models/interpretation'
 import type { MetricRecord } from '../../models/metric'
 import { navigateTo } from '../../utils/route'

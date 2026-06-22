@@ -1,4 +1,4 @@
-import { dashboardService } from '../../services'
+import { dashboardService } from '../../services/index'
 import type { Dashboard } from '../../models/scenario'
 import { navigateTo, showMockToast, switchTab } from '../../utils/route'
 

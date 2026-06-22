@@ -1,4 +1,4 @@
-import { metricService } from '../../services'
+import { metricService } from '../../services/index'
 import type { MetricRecord } from '../../models/metric'
 import { navigateTo, showMockToast } from '../../utils/route'
 

@@ -1,4 +1,4 @@
-import { memberService } from '../../services'
+import { memberService } from '../../services/index'
 import type { Member } from '../../models/member'
 import { navigateTo } from '../../utils/route'
 

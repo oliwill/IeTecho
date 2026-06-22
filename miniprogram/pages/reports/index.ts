@@ -1,7 +1,6 @@
 // 报告 Tab 页：跨家人的体检报告 / 化验单列表入口。
 // 当前为静态 Mock 骨架，数据接入后改走 reportService。
-import { reportService } from '../../services'
-import type { Report } from '../../models/report'
+import { reportService } from '../../services/index'
 
 interface ReportListItem {
   id: string
@@ -11,7 +10,7 @@ interface ReportListItem {
   statusLabel: string
 }
 
-const STATUS_LABELS: Record<Report['interpretationStatus'], string> = {
+const STATUS_LABELS: Record<string, string> = {
   none: '未解读',
   interpreting: '解读中',
   interpreted: '已解读',

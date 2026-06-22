@@ -1,4 +1,4 @@
-import { interpretationService } from '../../services'
+import { interpretationService } from '../../services/index'
 import { showMockToast } from '../../utils/route'
 
 Page({

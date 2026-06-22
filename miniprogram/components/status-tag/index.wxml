@@ -1,1 +1,1 @@
-<view class="status-tag status-tag--{{tone}}">{{text}}</view>
+<view class="status-tag status-tag--{{tone}}" wx:if="{{text}}">{{text}}</view>

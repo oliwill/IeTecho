@@ -1,4 +1,4 @@
-import { memberService, reportService, reminderService, metricService } from '../../services'
+import { memberService, reportService, reminderService, metricService } from '../../services/index'
 import type { Member } from '../../models/member'
 import type { Report } from '../../models/report'
 import type { Reminder } from '../../models/reminder'
