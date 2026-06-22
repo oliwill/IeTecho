@@ -24,5 +24,6 @@
   "appid": "touristappid",
   "projectname": "IeTecho",
   "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
   "condition": {}
 }

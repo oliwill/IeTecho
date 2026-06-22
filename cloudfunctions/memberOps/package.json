@@ -1,0 +1,9 @@
+{
+  "name": "memberOps",
+  "version": "1.0.0",
+  "description": "家庭成员档案增删改查（IeTecho P1 云函数）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

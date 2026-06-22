@@ -1,0 +1,9 @@
+{
+  "name": "exportData",
+  "version": "1.0.0",
+  "description": "导出全部档案为平台无关 JSON（IeTecho iOS 迁移前置）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

@@ -4,3 +4,6 @@ project.private.config.json
 node_modules/
 miniprogram/miniprogram_npm/
 .DS_Store
+
+# 云开发本地环境配置（不入库，含真实 env ID）
+miniprogram/config/cloud.local.ts

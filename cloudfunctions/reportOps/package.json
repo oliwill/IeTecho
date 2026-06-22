@@ -1,0 +1,9 @@
+{
+  "name": "reportOps",
+  "version": "1.0.0",
+  "description": "体检报告与指标增删改查（IeTecho P1 云函数）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

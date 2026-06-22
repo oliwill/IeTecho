@@ -8,6 +8,9 @@ import { resolve } from './_async'
  *
  * confirmationState 的本地更新当前只作用于内存副本(乐观 UI),
  * 接云函数后改为调用 createMetric / updateMetric 之类的写操作。
+ *
+ * P1 接入计划：第二批（reportOps 已支持 metric.* action，service 层接入留待
+ * 主链路 member/report/dashboard 云函数验证通过后再切，避免一次性改太多）。
  */
 const localMetrics: MetricRecord[] = metricRecords.map((item) => ({ ...item }))
 
