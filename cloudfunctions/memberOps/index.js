@@ -24,9 +24,9 @@ const db = cloud.database()
 const _ = db.command
 const COLLECTION = 'members'
 
-exports.main = async (event, context) => {
+exports.main = async (event) => {
   const { action } = event
-  const userId = resolveUserId(event, context)
+  const userId = resolveUserId(event)
 
   try {
     switch (action) {
@@ -108,11 +108,23 @@ function firstUseMember() {
   }
 }
 
-// 用户标识解析：优先用自有 userId（预留），回退到微信 openid（P1 阶段）。
-// iOS 阶段独立后端会用自己的鉴权产出 userId，此函数保持单一职责。
-function resolveUserId(event, context) {
+// 用户标识解析：
+// - 优先用 event.userId（自有鉴权预留，iOS 阶段用）
+// - 回退到 cloud.getWXContext().OPENID（云开发官方 API，从 environment 解析）
+// - 最终回退 anonymous（开发期未登录）
+//
+// 注意：不要用 context.OPENID（顶层属性，可能为 undefined）。
+// 必须用 cloud.getWXContext()，它正确解析腾讯云注入的 environment 字段。
+function resolveUserId(event) {
   if (event.userId) return event.userId
-  if (context && context.OPENID) return `wx:${context.OPENID}`
+  try {
+    const wxContext = cloud.getWXContext()
+    if (wxContext && wxContext.OPENID) {
+      return `wx:${wxContext.OPENID}`
+    }
+  } catch (e) {
+    // getWXContext 在非微信环境调用会抛错，忽略。
+  }
   return 'anonymous'
 }
 

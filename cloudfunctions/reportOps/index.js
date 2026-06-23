@@ -30,7 +30,7 @@ const _ = db.command
 const REPORTS = 'reports'
 const METRICS = 'metric_records'
 
-exports.main = async (event, context) => {
+exports.main = async (event) => {
   const { action } = event
   const userId = resolveUserId(event, context)
 
@@ -137,9 +137,16 @@ async function removeMetric(userId, id) {
 
 // ── 工具 ──────────────────────────────────────────
 
-function resolveUserId(event, context) {
+function resolveUserId(event) {
   if (event.userId) return event.userId
-  if (context && context.OPENID) return `wx:${context.OPENID}`
+  try {
+    const wxContext = cloud.getWXContext()
+    if (wxContext && wxContext.OPENID) {
+      return `wx:${wxContext.OPENID}`
+    }
+  } catch (e) {
+    // getWXContext 在非微信环境调用会抛错，忽略。
+  }
   return 'anonymous'
 }
 

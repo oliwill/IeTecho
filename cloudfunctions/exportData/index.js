@@ -16,7 +16,7 @@ const db = cloud.database()
 const APP_VERSION = '0.1.0'
 const SCHEMA_VERSION = 1
 
-exports.main = async (event, context) => {
+exports.main = async (event) => {
   const userId = resolveUserId(event, context)
   const where = { userId }
 
@@ -55,8 +55,15 @@ function stripInternal(records) {
   return records.map(({ _id, _openid, ...rest }) => rest)
 }
 
-function resolveUserId(event, context) {
+function resolveUserId(event) {
   if (event.userId) return event.userId
-  if (context && context.OPENID) return `wx:${context.OPENID}`
+  try {
+    const wxContext = cloud.getWXContext()
+    if (wxContext && wxContext.OPENID) {
+      return `wx:${wxContext.OPENID}`
+    }
+  } catch (e) {
+    // getWXContext 在非微信环境调用会抛错，忽略。
+  }
   return 'anonymous'
 }

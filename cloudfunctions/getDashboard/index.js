@@ -10,7 +10,7 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 const _ = db.command
 
-exports.main = async (event, context) => {
+exports.main = async (event) => {
   const userId = resolveUserId(event, context)
   const where = { userId }
 
@@ -95,8 +95,15 @@ function sortReminders(reminders) {
   })
 }
 
-function resolveUserId(event, context) {
+function resolveUserId(event) {
   if (event.userId) return event.userId
-  if (context && context.OPENID) return `wx:${context.OPENID}`
+  try {
+    const wxContext = cloud.getWXContext()
+    if (wxContext && wxContext.OPENID) {
+      return `wx:${wxContext.OPENID}`
+    }
+  } catch (e) {
+    // getWXContext 在非微信环境调用会抛错，忽略。
+  }
   return 'anonymous'
 }
