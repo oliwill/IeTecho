@@ -11,7 +11,7 @@ const db = cloud.database()
 const _ = db.command
 
 exports.main = async (event) => {
-  const userId = resolveUserId(event, context)
+  const userId = resolveUserId(event)
   const where = { userId }
 
   try {

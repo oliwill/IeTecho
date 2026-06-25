@@ -52,12 +52,24 @@ exports.main = async (event) => {
 
 async function list(userId) {
   const { data } = await db.collection(COLLECTION).where({ userId }).get()
-  return { ok: true, data }
+  return { ok: true, data: data.map(normalizeId) }
 }
 
 async function get(userId, id) {
-  const { data } = await db.collection(COLLECTION).where({ _id: id, userId }).get()
-  return { ok: true, data: data[0] || null }
+  // id 可能是业务 id（如 member-mother），也可能是云数据库 _id。
+  // 先按业务 id 查，查不到再按 _id 查。两者都带 userId 隔离。
+  let { data } = await db.collection(COLLECTION).where({ id, userId }).get()
+  if (!data.length) {
+    data = (await db.collection(COLLECTION).where({ _id: id, userId }).get()).data
+  }
+  return { ok: true, data: data[0] ? normalizeId(data[0]) : null }
+}
+
+// 保证每条记录都有 id 字段：优先业务 id，回退云数据库 _id。
+// 避免前端取 member.id 时因导入数据缺 id 而得到 undefined。
+function normalizeId(record) {
+  if (!record) return record
+  return { ...record, id: record.id || record._id }
 }
 
 async function create(userId, member) {

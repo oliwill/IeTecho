@@ -1,11 +1,13 @@
 <view class="family-card card animate-card-enter tap-scale" bindtap="handleOpen">
   <view class="family-card__top">
-    <view class="family-card__avatar family-card__avatar--{{member.avatarType}}">{{avatarText}}</view>
+    <view class="family-card__head">
+      <view class="family-card__avatar family-card__avatar--{{member.avatarType}}">{{avatarText}}</view>
+      <view class="family-card__identity">
+        <view class="family-card__name">{{member.name}}</view>
+        <view class="family-card__meta">{{member.relationLabel}}<text wx:if="{{member.ageLabel}}">｜{{member.ageLabel}}</text></view>
+      </view>
+    </view>
     <status-tag text="{{member.statusText}}" tone="{{tone}}" />
-  </view>
-  <view class="family-card__name-row">
-    <view class="family-card__name">{{member.name}}</view>
-    <view class="family-card__meta">{{member.relationLabel}}<text wx:if="{{member.ageLabel}}">｜{{member.ageLabel}}</text></view>
   </view>
   <view class="family-card__detail" wx:if="{{member.latestReportDate}}">最近报告：{{member.latestReportDate}}</view>
   <view class="family-card__detail" wx:else>还没有健康档案</view>

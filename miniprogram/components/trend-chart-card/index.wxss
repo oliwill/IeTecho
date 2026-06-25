@@ -36,15 +36,15 @@
 
 .trend-card__value {
   margin-top: 4px;
-  font-size: var(--font-body-small);
+  font-size: var(--font-card-title);
   font-weight: 800;
   line-height: 1.25;
 }
 
 .trend-card__direction {
-  margin-top: 6px;
-  font-size: var(--font-number);
-  font-weight: 900;
+  margin-top: 4px;
+  font-size: var(--font-caption);
+  font-weight: 700;
   color: var(--color-status-normal);
 }
 

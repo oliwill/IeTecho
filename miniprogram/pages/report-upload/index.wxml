@@ -1,45 +1,87 @@
 <view class="page-shell upload-page">
   <view class="page-title">上传报告</view>
-  <view class="page-subtitle">先确认这份报告属于谁，再开始解读。</view>
+  <view class="page-subtitle">确认这份报告属于谁，选择文件后提交。</view>
 
-  <view class="section card">
-    <view class="form-label">归属成员</view>
-    <view class="member-select">我 <text>默认</text></view>
+  <view wx:if="{{loadingMembers}}" class="section card">
+    <view class="loading-text">加载家人列表…</view>
   </view>
 
-  <view class="section upload-box card card-soft tap-scale" bindtap="chooseMockFile">
-    <view class="upload-box__mark">文</view>
-    <view class="upload-box__title">{{uploadTitle}}</view>
-    <view class="upload-box__desc">{{uploadDescription}}</view>
-  </view>
-
-  <view class="section form-card card">
-    <view class="form-item">
-      <view class="form-label">报告类型</view>
-      <view class="chip-row">
-        <button class="chip chip--active">体检</button>
-        <button class="chip">化验</button>
-        <button class="chip">门诊</button>
-        <button class="chip">影像</button>
+  <block wx:else>
+    <!-- 归属成员 -->
+    <view class="section card">
+      <view class="form-label">归属成员<text wx:if="{{selectedMemberName}}" class="form-label__hint">· 已选 {{selectedMemberName}}</text></view>
+      <view class="member-chips">
+        <view
+          wx:for="{{members}}"
+          wx:key="id"
+          class="member-chip {{item.id === selectedMemberId ? 'member-chip--active' : ''}}"
+          data-id="{{item.id}}"
+          catchtap="selectMember"
+        >{{item.id === selectedMemberId ? '✓ ' : ''}}{{item.name}}·{{item.relationLabel}}</view>
       </view>
     </view>
-    <view class="form-item">
-      <view class="form-label">报告日期</view>
-      <view class="form-static">2026-06-12</view>
-    </view>
-    <view class="form-item">
-      <view class="form-label">医院 / 科室</view>
-      <view class="form-static">待填写</view>
-    </view>
-  </view>
 
-  <view class="section notice-card card">
-    <view class="notice-card__title">AI 解读提示</view>
-    <view class="notice-card__text">报告解读需要调用第三方 AI 服务，报告文本可能会被发送至模型接口用于生成解读。</view>
-  </view>
+    <!-- 文件选择：两个入口 -->
+    <view class="section upload-sources card">
+      <view class="form-label">报告文件</view>
 
-  <view class="section action-stack">
-    <app-button variant="primary" bind:tapbutton="startInterpret">开始解读</app-button>
-    <app-button variant="secondary" bind:tapbutton="saveOnly">先保存，不解读</app-button>
+      <view wx:if="{{filePath}}" class="file-chosen card-soft">
+        <view class="file-chosen__icon">✓</view>
+        <view class="file-chosen__info">
+          <view class="file-chosen__name">{{fileName}}</view>
+          <view class="file-chosen__change" catchtap="chooseFile">更换文件</view>
+        </view>
+      </view>
+
+      <view wx:else class="source-buttons">
+        <view class="source-btn tap-scale" catchtap="chooseFile">
+          <view class="source-btn__icon">聊</view>
+          <view class="source-btn__title">从聊天选择</view>
+          <view class="source-btn__desc">微信聊天里收到的 PDF / 图片</view>
+        </view>
+        <view class="source-btn tap-scale" catchtap="chooseFromAlbum">
+          <view class="source-btn__icon">册</view>
+          <view class="source-btn__title">从相册选择</view>
+          <view class="source-btn__desc">本地相册里的报告照片</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 报告元信息 -->
+    <view class="section form-card card">
+      <view class="form-item">
+        <view class="form-label">报告类型</view>
+        <view class="chip-row">
+          <view
+            wx:for="{{reportTypes}}"
+            wx:key="value"
+            class="chip {{item.value === selectedReportType ? 'chip--active' : ''}}"
+            data-value="{{item.value}}"
+            catchtap="selectReportType"
+          >{{item.label}}</view>
+        </view>
+      </view>
+      <view class="form-item">
+        <view class="form-label">报告日期</view>
+        <picker mode="date" value="{{reportDate}}" bindchange="onDateChange">
+          <view class="form-static">{{reportDate}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 隐私提示 -->
+    <view class="section notice-card card">
+      <view class="notice-card__title">隐私提示</view>
+      <view class="notice-card__text">报告文件上传后存入你的云端档案，仅本人可见。AI 解读（即将开放）会调用第三方模型服务。</view>
+    </view>
+
+    <view wx:if="{{errorMsg}}" class="section error-msg">{{errorMsg}}</view>
+
+    <view class="submit-spacer"></view>
+  </block>
+
+  <!-- 提交：固定底部，永远可见 -->
+  <view wx:if="{{!loadingMembers}}" class="submit-bar">
+    <app-button variant="primary" bind:tapbutton="saveOnly" loading="{{uploading}}">{{uploading ? '上传中…' : '保存报告'}}</app-button>
   </view>
 </view>

@@ -8,6 +8,10 @@ import { callCloud, isCloudReady } from './_cloud'
  * iOS 阶段：_cloud 实现换成 fetch 后端，此 service 接口不变。
  */
 
+export interface UploadResult {
+  report: Report
+}
+
 export const reportService = {
   /** 全部报告。 */
   async list(): Promise<Report[]> {
@@ -44,5 +48,63 @@ export const reportService = {
       }
     }
     return reports.find((item) => item.id === id)
+  },
+
+  /**
+   * 上传报告文件 + 写入报告记录。
+   * 两步：前端直传云存储拿 fileID → 调 reportOps.create 写库。
+   *
+   * iOS 阶段：第一步换成 presigned URL 直传对象存储，第二步不变。
+   *
+   * @param filePath 微信选文件返回的临时路径
+   * @param input 报告元信息（成员、类型、日期等）
+   */
+  async upload(filePath: string, input: {
+    memberId: string
+    memberName: string
+    reportType: Report['reportType']
+    reportTypeLabel: string
+    reportDate: string
+    hospital?: string
+    department?: string
+  }): Promise<UploadResult> {
+    if (!isCloudReady()) {
+      throw new Error('上传需要云环境，mock 阶段不支持')
+    }
+
+    // 第一步：直传云存储。路径按 openid 隔离（云路径里 openid 从云函数 getWXContext 拿，
+    // 但前端无法直接拿 openid，这里用「reports/ 时间戳」做路径，权限靠云存储规则保证）
+    const ext = filePath.split('.').pop() || 'file'
+    const cloudPath = `reports/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+
+    const uploadResult = await new Promise<string>((resolve, reject) => {
+      wx.cloud.uploadFile({
+        cloudPath,
+        filePath,
+        success: (res) => resolve(res.fileID),
+        fail: (err) => reject(new Error(err.errMsg || '上传文件失败'))
+      })
+    })
+
+    // 第二步：写报告记录（含 fileID）
+    const report: Partial<Report> = {
+      memberId: input.memberId,
+      memberName: input.memberName,
+      reportType: input.reportType,
+      reportTypeLabel: input.reportTypeLabel,
+      reportDate: input.reportDate,
+      hospital: input.hospital,
+      department: input.department,
+      fileType: ext === 'pdf' ? 'pdf' : 'image',
+      fileName: cloudPath.split('/').pop(),
+      fileID: uploadResult,
+      summary: '',
+      interpretationStatus: 'none',
+      pendingMetricCount: 0
+    }
+
+    const created = await callCloud<Report>('reportOps', { action: 'report.create', report })
+    return { report: created }
   }
 }
+

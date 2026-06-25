@@ -32,7 +32,7 @@ const METRICS = 'metric_records'
 
 exports.main = async (event) => {
   const { action } = event
-  const userId = resolveUserId(event, context)
+  const userId = resolveUserId(event)
 
   try {
     // 报告操作
@@ -66,12 +66,22 @@ exports.main = async (event) => {
 async function listReports(userId, memberId) {
   const where = memberId ? { userId, memberId } : { userId }
   const { data } = await db.collection(REPORTS).where(where).get()
-  return { ok: true, data }
+  return { ok: true, data: data.map(normalizeId) }
+}
+
+// 保证每条记录都有 id 字段（优先业务 id，回退 _id）。
+function normalizeId(record) {
+  if (!record) return record
+  return { ...record, id: record.id || record._id }
 }
 
 async function getReport(userId, id) {
-  const { data } = await db.collection(REPORTS).where({ _id: id, userId }).get()
-  return { ok: true, data: data[0] || null }
+  // id 可能是业务 id 也可能是 _id，先按业务 id 查，查不到再按 _id 查。
+  let { data } = await db.collection(REPORTS).where({ id, userId }).get()
+  if (!data.length) {
+    data = (await db.collection(REPORTS).where({ _id: id, userId }).get()).data
+  }
+  return { ok: true, data: data[0] ? normalizeId(data[0]) : null }
 }
 
 async function createReport(userId, report) {

@@ -4,14 +4,30 @@
 
 .family-card__top {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* 头像 + 姓名横向排列，整体左对齐 */
+.family-card__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 0;
+}
+
+.family-card__identity {
+  flex: 1;
+  min-width: 0;
 }
 
 .family-card__avatar {
+  flex-shrink: 0;
   width: 48px;
   height: 48px;
-  border-radius: 18px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,10 +42,6 @@
 .family-card__avatar--self { background: var(--color-primary); }
 .family-card__avatar--child { background: #9FBD6E; }
 .family-card__avatar--partner { background: #9A8FB8; }
-
-.family-card__name-row {
-  margin-top: var(--space-4);
-}
 
 .family-card__name {
   font-size: var(--font-card-title);

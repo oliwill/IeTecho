@@ -7,18 +7,16 @@
     <button class="family-page__add tap-scale" bindtap="goEdit">＋</button>
   </view>
 
-  <view class="section" wx:if="{{isFirstUse && firstUseMember}}">
+  <view class="section stack-12" wx:if="{{isFirstUse && firstUseMember}}">
     <family-profile-card member="{{firstUseMember}}" bind:open="goUpload" />
-    <view class="section">
-      <empty-state
-        mark="家"
-        title="也可以管理家人健康"
-        description="为父母、伴侣、孩子建立档案，复查和提醒会按成员归档。"
-        action-text="添加家人"
-        action-variant="secondary"
-        bind:action="goEdit"
-      />
-    </view>
+    <empty-state
+      mark="家"
+      title="也可以管理家人健康"
+      description="为父母、伴侣、孩子建立档案，复查和提醒会按成员归档。"
+      action-text="添加家人"
+      action-variant="secondary"
+      bind:action="goEdit"
+    />
   </view>
 
   <view class="section stack-12" wx:elif="{{members}}">
@@ -28,6 +26,6 @@
       member="{{item}}"
       bind:open="goMemberDetail"
     />
-    <button class="family-page__tail-add tap-scale" bindtap="goEdit">＋ 添加父母 / 伴侣 / 孩子</button>
+    <button class="family-page__tail-add tap-scale" bindtap="goEdit">＋ 添加更多家人</button>
   </view>
 </view>

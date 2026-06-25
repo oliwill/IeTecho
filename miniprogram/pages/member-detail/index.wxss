@@ -21,3 +21,57 @@
 .history-item:first-of-type {
   margin-top: var(--space-3);
 }
+
+/* 录入入口区 */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.action-cell {
+  padding: var(--space-4) var(--space-2);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card-soft);
+  text-align: center;
+}
+
+.action-cell__icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+  font-size: var(--font-card-title);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-cell__label {
+  color: var(--color-text-primary);
+  font-size: var(--font-caption);
+  font-weight: 700;
+}
+
+/* 空态：该成员在云端尚无数据 */
+.detail-empty {
+  text-align: center;
+}
+
+.detail-empty__title {
+  font-size: var(--font-card-title);
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.detail-empty__desc {
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  line-height: 1.55;
+}

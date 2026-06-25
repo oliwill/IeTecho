@@ -36,5 +36,27 @@
     <view class="history-item">2026.06.01｜体检报告｜待确认指标</view>
     <view class="history-item">2026.03.12｜门诊记录｜血压记录</view>
   </view>
+
+  <!-- 录入入口 -->
+  <view class="section action-grid">
+    <view class="action-cell tap-scale" catchtap="goUpload">
+      <view class="action-cell__icon">报</view>
+      <view class="action-cell__label">上传报告</view>
+    </view>
+    <view class="action-cell tap-scale" catchtap="goEdit">
+      <view class="action-cell__icon">档</view>
+      <view class="action-cell__label">编辑档案</view>
+    </view>
+    <view class="action-cell tap-scale" catchtap="goAddReminder">
+      <view class="action-cell__icon">醒</view>
+      <view class="action-cell__label">添加提醒</view>
+    </view>
+  </view>
   </block>
+
+  <view wx:else class="section card detail-empty">
+    <view class="detail-empty__title">还没有这个成员的档案</view>
+    <view class="detail-empty__desc">当前云端还没有该成员数据。先去上传一份报告或创建档案，资料会按成员归档。</view>
+    <app-button variant="primary" bind:tapbutton="goUpload">上传报告</app-button>
+  </view>
 </view>

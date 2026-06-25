@@ -24,11 +24,24 @@
   margin-top: var(--space-section-y);
 }
 
+/* 页面第一个 section 紧跟标题，不需要顶部间距 */
+.page-shell > .section:first-of-type {
+  margin-top: var(--space-5);
+}
+
 .section-header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
+  gap: var(--space-3);
   margin-bottom: var(--space-3);
+}
+
+/* section-header 内链接与标题底部对齐 */
+.section-header .text-link {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .section-title {
@@ -49,13 +62,25 @@
   background: var(--color-surface-warm);
 }
 
+/* 垂直堆叠：子元素统一间距，第一个无顶部间距。
+   注意：WXSS 不支持通配符 *，必须显式列出 .stack-12 下实际出现的子元素标签——
+   既包括原生 view/button，也包括自定义组件（reminder-card / family-profile-card 等，
+   它们是独立标签，原 .stack-12 > view/button 命中不到，会导致卡片之间紧贴重叠）。 */
 .stack-12 > view,
-.stack-12 > button {
+.stack-12 > button,
+.stack-12 > reminder-card,
+.stack-12 > family-profile-card,
+.stack-12 > metric-annotation-card,
+.stack-12 > empty-state {
   margin-top: var(--space-3);
 }
 
 .stack-12 > view:first-child,
-.stack-12 > button:first-child {
+.stack-12 > button:first-child,
+.stack-12 > reminder-card:first-child,
+.stack-12 > family-profile-card:first-child,
+.stack-12 > metric-annotation-card:first-child,
+.stack-12 > empty-state:first-child {
   margin-top: 0;
 }
 

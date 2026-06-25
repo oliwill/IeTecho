@@ -23,6 +23,11 @@
 
 .report-item {
   padding: var(--space-card);
+  margin-top: var(--space-3);
+}
+
+.report-item:first-of-type {
+  margin-top: 0;
 }
 
 .report-row {
@@ -31,17 +36,27 @@
   gap: var(--space-3);
 }
 
+/* 纯 CSS 文档图标：圆角矩形 + 右上角折角，不依赖方块里放文字 */
 .report-doc {
+  position: relative;
   flex-shrink: 0;
-  width: 84rpx;
-  height: 96rpx;
-  border-radius: var(--radius-md);
+  width: 48px;
+  height: 60px;
+  border-radius: 8px;
   background: var(--color-primary-soft);
-  color: var(--color-primary-deep);
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 1.5px solid var(--color-primary);
+}
+
+.report-doc__fold {
+  position: absolute;
+  top: -1.5px;
+  right: -1.5px;
+  width: 16px;
+  height: 16px;
+  background: var(--color-surface);
+  border-bottom: 1.5px solid var(--color-primary);
+  border-left: 1.5px solid var(--color-primary);
+  border-bottom-left-radius: 4px;
 }
 
 .report-main {

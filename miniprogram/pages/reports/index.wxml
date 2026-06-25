@@ -18,7 +18,9 @@
     <view class="section">
       <view class="report-item card" wx:for="{{reports}}" wx:key="id" data-id="{{item.id}}" bindtap="tapReport">
         <view class="report-row">
-          <view class="report-doc">解</view>
+          <view class="report-doc">
+            <view class="report-doc__fold"></view>
+          </view>
           <view class="report-main">
             <view class="report-title">{{item.title}}</view>
             <view class="report-meta">{{item.memberName}} · {{item.reportDate}}</view>

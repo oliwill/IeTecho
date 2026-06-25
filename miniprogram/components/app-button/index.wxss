@@ -1,4 +1,6 @@
 .app-button {
+  width: 100%;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,10 +13,20 @@
   line-height: 1.2;
 }
 
+/* 去掉微信原生 button 的默认边框和外边距，避免在 grid 内撑破布局 */
+.app-button::after {
+  border: none;
+}
+
 .app-button--primary {
   background: var(--color-primary);
   color: var(--color-text-inverse);
-  box-shadow: 0 6px 18px rgba(53, 175, 160, 0.24);
+  box-shadow: 0 6px 18px rgba(79, 119, 101, 0.24);
+}
+
+.app-button--disabled {
+  opacity: 0.55;
+  box-shadow: none;
 }
 
 .app-button--secondary {

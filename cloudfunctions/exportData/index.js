@@ -17,7 +17,7 @@ const APP_VERSION = '0.1.0'
 const SCHEMA_VERSION = 1
 
 exports.main = async (event) => {
-  const userId = resolveUserId(event, context)
+  const userId = resolveUserId(event)
   const where = { userId }
 
   try {

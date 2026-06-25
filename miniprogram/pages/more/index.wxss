@@ -6,6 +6,8 @@
 .more-item {
   min-height: 48px;
   width: 100%;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,7 +15,14 @@
   font-size: var(--font-body);
   font-weight: 600;
   text-align: left;
+  background: transparent;
   border-top: 1px solid rgba(38, 50, 56, 0.06);
+  line-height: 1.4;
+}
+
+/* 去掉原生 button 默认边框，保证文字真正左对齐 */
+.more-item::after {
+  border: none;
 }
 
 .more-item:first-of-type {

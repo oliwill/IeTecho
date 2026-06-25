@@ -1,3 +1,3 @@
-<button class="app-button app-button--{{variant}} tap-scale" bindtap="handleTap">
+<button class="app-button app-button--{{variant}} {{loading || disabled ? 'app-button--disabled' : 'tap-scale'}}" loading="{{loading}}" disabled="{{loading || disabled}}" bindtap="handleTap">
   <slot></slot>
 </button>
