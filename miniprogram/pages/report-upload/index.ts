@@ -153,7 +153,7 @@ Page({
     this.setData({ uploading: true, errorMsg: '' })
 
     try {
-      await reportService.upload(filePath, {
+      const result = await reportService.upload(filePath, {
         memberId: selectedMemberId,
         memberName: member.name,
         reportType: selectedReportType,
@@ -162,9 +162,11 @@ Page({
       })
 
       this.setData({ uploading: false })
-      wx.showToast({ title: '已保存报告', icon: 'success' })
+      wx.showToast({ title: '上传成功，开始解读', icon: 'success' })
+      const reportId = result.report.id
       setTimeout(() => {
-        navigateTo(`/pages/member-detail/index?memberId=${selectedMemberId}`)
+        // 跳解读结果页，report-result 会检测报告状态为 none 后自动触发解读
+        navigateTo(`/pages/report-result/index?id=${reportId}`)
       }, 800)
     } catch (err: any) {
       this.setData({

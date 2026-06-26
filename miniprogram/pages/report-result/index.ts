@@ -1,20 +1,134 @@
-import { interpretationService, metricService } from '../../services/index'
+import { reportService } from '../../services/index'
+import { interpretationService } from '../../services/index'
 import type { Interpretation } from '../../models/interpretation'
-import type { MetricRecord } from '../../models/metric'
 import { navigateTo } from '../../utils/route'
+
+const POLL_INTERVAL = 3000 // 轮询间隔 3 秒
+const POLL_MAX = 20 // 最多轮询 20 次（约 1 分钟）
 
 Page({
   data: {
+    reportId: '',
+    loading: true,
+    interpreting: false, // 解读中
+    failed: false, // 解读失败
     interpretation: null as Interpretation | null,
-    abnormalMetrics: null as MetricRecord[] | null
+    abnormalCount: 0
   },
-  async onLoad() {
-    const list = await interpretationService.list()
-    const interpretation = list[0] || null
-    const abnormalMetrics = await metricService.getAbnormal()
-    this.setData({ interpretation, abnormalMetrics })
+
+  pollTimer: null as any,
+  pollCount: 0,
+
+  async onLoad(options: any) {
+    const reportId = options?.id || ''
+    if (!reportId) {
+      this.setData({ loading: false, failed: true })
+      return
+    }
+    this.setData({ reportId })
+    await this.loadInterpretation()
   },
+
+  onUnload() {
+    this.clearPoll()
+  },
+
+  async loadInterpretation() {
+    const { reportId } = this.data
+    try {
+      // 取报告状态
+      const report = await reportService.getById(reportId)
+      if (!report) {
+        this.setData({ loading: false, failed: true })
+        return
+      }
+
+      const status = report.interpretationStatus
+
+      // 解读中：开始轮询
+      if (status === 'interpreting') {
+        this.setData({ loading: false, interpreting: true })
+        this.startPoll()
+        return
+      }
+
+      // 解读失败
+      if (status === 'failed') {
+        this.setData({ loading: false, failed: true })
+        return
+      }
+
+      // 已解读：取解读记录
+      if (status === 'interpreted' || status === 'pendingMetrics' || status === 'saved') {
+        const interp = await interpretationService.getByReport(reportId)
+        this.setData({
+          loading: false,
+          interpreting: false,
+          interpretation: interp || null,
+          abnormalCount: (interp && interp.abnormalMetrics && interp.abnormalMetrics.length) || 0
+        })
+        return
+      }
+
+      // 未解读（none）：主动触发解读
+      if (status === 'none') {
+        this.setData({ loading: false, interpreting: true })
+        this.startInterpret()
+        return
+      }
+    } catch (err) {
+      console.warn('[report-result] loadInterpretation failed', err)
+      this.setData({ loading: false, failed: true })
+    }
+  },
+
+  // 主动触发解读（报告状态为 none 时）
+  async startInterpret() {
+    try {
+      await reportService.interpret(this.data.reportId)
+      this.startPoll()
+    } catch (err) {
+      console.warn('[report-result] startInterpret failed', err)
+      this.setData({ interpreting: false, failed: true })
+    }
+  },
+
+  // 轮询解读状态
+  startPoll() {
+    this.clearPoll()
+    this.pollCount = 0
+    this.pollTimer = setInterval(async () => {
+      this.pollCount++
+      if (this.pollCount > POLL_MAX) {
+        this.clearPoll()
+        this.setData({ interpreting: false, failed: true })
+        return
+      }
+      const report = await reportService.getById(this.data.reportId)
+      const status = report && report.interpretationStatus
+      if (status === 'interpreted' || status === 'pendingMetrics' || status === 'saved') {
+        this.clearPoll()
+        await this.loadInterpretation()
+      } else if (status === 'failed') {
+        this.clearPoll()
+        this.setData({ interpreting: false, failed: true })
+      }
+    }, POLL_INTERVAL)
+  },
+
+  clearPoll() {
+    if (this.pollTimer) {
+      clearInterval(this.pollTimer)
+      this.pollTimer = null
+    }
+  },
+
+  retry() {
+    this.setData({ failed: false, interpreting: true, loading: true })
+    this.loadInterpretation()
+  },
+
   goConfirm() {
-    navigateTo('/pages/metric-confirm/index')
+    navigateTo(`/pages/metric-confirm/index?reportId=${this.data.reportId}`)
   }
 })

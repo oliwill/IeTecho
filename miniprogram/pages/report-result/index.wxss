@@ -1,3 +1,123 @@
+/* 解读中 */
+.interpreting-card {
+  padding: var(--space-8) var(--space-card-large);
+  text-align: center;
+}
+
+.interpreting-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--space-4);
+  border-radius: var(--radius-xl);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+  font-size: var(--font-number-large);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.interpreting-title {
+  color: var(--color-text-primary);
+  font-size: var(--font-card-title);
+  font-weight: 800;
+}
+
+.interpreting-desc {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  line-height: 1.6;
+}
+
+/* 异常指标卡 */
+.metric-stack {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.metric-card {
+  padding: var(--space-card);
+}
+
+.metric-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.metric-name {
+  color: var(--color-text-primary);
+  font-size: var(--font-body);
+  font-weight: 800;
+}
+
+.metric-value {
+  color: var(--color-status-warning);
+  font-size: var(--font-number-large);
+  font-weight: 800;
+}
+
+.metric-unit {
+  font-size: var(--font-body-small);
+  font-weight: 600;
+}
+
+.metric-range {
+  margin-top: 2px;
+  color: var(--color-text-muted);
+  font-size: var(--font-caption);
+}
+
+.metric-explain {
+  margin-top: var(--space-2);
+  color: var(--color-text-primary);
+  font-size: var(--font-body-small);
+  line-height: 1.6;
+}
+
+.metric-next {
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+  font-size: var(--font-caption);
+  line-height: 1.5;
+}
+
+/* 空态 / 失败 */
+.empty-title {
+  color: var(--color-text-primary);
+  font-size: var(--font-card-title);
+  font-weight: 800;
+  text-align: center;
+}
+
+.empty-desc {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.loading-text {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-body-small);
+  padding: var(--space-4) 0;
+}
+
 .result-copy,
 .bullet,
 .disclaimer-card__text {

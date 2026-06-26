@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>我家手帖 UI 修正版入口</title>
+  <style>
+    :root { --bg:#e7efec; --surface:#fffdf8; --fg:#32443c; --muted:#587066; --accent:#4f7765; --border:rgba(70,101,86,.16); }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; background:var(--bg); color:var(--fg); font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",system-ui,sans-serif; }
+    main { width:min(960px, calc(100vw - 32px)); margin:0 auto; padding:48px 0; }
+    .hero { display:grid; gap:14px; margin-bottom:28px; }
+    .kicker { color:var(--accent); font-size:13px; font-weight:800; letter-spacing:.08em; }
+    h1 { margin:0; max-width:720px; font-size:clamp(34px, 6vw, 56px); line-height:1.05; letter-spacing:-.03em; }
+    p { margin:0; color:var(--muted); font-size:17px; line-height:1.65; max-width:680px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; }
+    .card { min-height:168px; display:flex; flex-direction:column; justify-content:space-between; padding:20px; border-radius:22px; background:var(--surface); border:1px solid var(--border); box-shadow:0 10px 28px rgba(38,50,56,.09); }
+    .card h2 { margin:0; font-size:20px; line-height:1.25; letter-spacing:-.012em; }
+    .card p { margin-top:10px; font-size:15px; line-height:1.55; }
+    .link { margin-top:22px; display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 16px; border-radius:14px; background:var(--accent); color:white; font-weight:800; }
+    .note { margin-top:28px; padding:16px 18px; border-radius:18px; background:rgba(255,253,248,.7); color:var(--muted); font-size:14px; line-height:1.6; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="kicker">我家手帖 · UI 修正版</div>
+      <h1>把间距、对齐、字号层级和文案问题拆成可回填的页面稿</h1>
+      <p>这版按 375×812 小程序画布重做关键屏幕：统一模块间距，修正「查看全部」底部对齐，单位降级，快捷按钮不溢出，报告列表去掉方块文字图标，家人卡头像与文字左轴对齐。</p>
+    </section>
+
+    <section class="grid" aria-label="修正版页面">
+      <article class="card"><div><h2>首页模块修正</h2><p>待办提醒、重点指标趋势、快捷操作统一间距和按钮宽度。</p></div><a class="link" href="home-fixed.html">查看首页</a></article>
+      <article class="card"><div><h2>家人页修正</h2><p>头像与文字左对齐，卡片不重叠，添加文案改为「添加更多家人」。</p></div><a class="link" href="family-fixed.html">查看家人页</a></article>
+      <article class="card"><div><h2>报告页修正</h2><p>移除方块文字 icon，以文本层级和状态标签承载信息。</p></div><a class="link" href="reports-fixed.html">查看报告页</a></article>
+      <article class="card"><div><h2>上传报告修正</h2><p>报告类型 chip 居中，文件来源入口保留真实可点区域。</p></div><a class="link" href="upload-fixed.html">查看上传页</a></article>
+      <article class="card"><div><h2>更多页修正</h2><p>列表项左对齐，分组之间统一 20px 间距。</p></div><a class="link" href="more-fixed.html">查看更多页</a></article>
+      <article class="card"><div><h2>成员档案空态</h2><p>解释当前无信息状态，提供上传报告和完善资料的下一步。</p></div><a class="link" href="member-detail-empty-fixed.html">查看空态</a></article>
+    </section>
+
+    <div class="note">实现回填重点：把组件栈间距统一为 16px，页面 section 间距统一为 20px；单位使用 11px/500；卡片内按钮使用 grid 的 minmax(0, 1fr)，避免「查看家人」溢出。</div>
+  </main>
+</body>
+</html>

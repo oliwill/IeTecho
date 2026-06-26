@@ -52,6 +52,9 @@ exports.main = async (event) => {
     if (action === 'metric.update') return await updateMetric(userId, event.id, event.patch)
     if (action === 'metric.remove') return await removeMetric(userId, event.id)
 
+    // 解读查询
+    if (action === 'interp.getByReport') return await getInterpretation(userId, event.reportId)
+
     // 趋势摘要（基于已确认指标聚合，P1 先返回空结构，P2 接 ECharts 时完善）
     if (action === 'trend.getSummaries') return { ok: true, data: [] }
 
@@ -162,4 +165,15 @@ function resolveUserId(event) {
 
 function genId(prefix) {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+}
+
+// 解读查询：按 reportId 取该报告的 AI 解读记录
+async function getInterpretation(userId, reportId) {
+  const { data } = await db
+    .collection('interpretations')
+    .where({ reportId, userId })
+    .orderBy('createdAt', 'desc')
+    .limit(1)
+    .get()
+  return { ok: true, data: data[0] ? normalizeId(data[0]) : null }
 }

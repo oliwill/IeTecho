@@ -7,3 +7,6 @@ miniprogram/miniprogram_npm/
 
 # 云开发本地环境配置（不入库，含真实 env ID）
 miniprogram/config/cloud.local.ts
+
+# 云函数本地配置（不入库，含真实 API key）
+cloudfunctions/interpretReport/config.json

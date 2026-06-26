@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>更多页修正版</title>
+  <link rel="stylesheet" href="shared-ui.css">
+</head>
+<body>
+  <main class="phone">
+    <div class="statusbar"><span>中国联通 5G</span><span>14:48</span><span>84%</span></div>
+    <div class="navbar"><span></span><div class="nav-title">更多</div><div class="capsule">•••</div></div>
+    <section class="page more-page">
+      <h1 class="page-title">更多</h1>
+      <p class="page-subtitle">管理家人的健康数据、提醒规则和隐私授权。</p>
+
+      <section class="section account-card card" aria-label="当前家庭账户">
+        <div class="account-main">
+          <div class="avatar self" aria-hidden="true">我</div>
+          <div class="account-copy">
+            <div class="account-name">林小雨的家</div>
+            <div class="account-meta">已守护 3 位家人 · 最近同步 14:20</div>
+          </div>
+        </div>
+        <button type="button" class="secondary-btn account-action">管理家庭成员</button>
+      </section>
+
+      <section class="section privacy-card card" aria-label="隐私保护状态">
+        <div>
+          <div class="section-title">数据保护</div>
+          <p class="privacy-copy">报告原件仅用于本次解读，敏感字段已默认隐藏，可随时导出或删除。</p>
+        </div>
+        <span class="tag info">本机可控</span>
+      </section>
+
+      <section class="section more-group card">
+        <div class="section-title">常用管理</div>
+        <div class="more-list">
+          <button class="more-item" type="button"><span>提醒管理</span><span class="more-arrow">›</span></button>
+          <button class="more-item" type="button"><span>数据导出</span><span class="more-arrow">›</span></button>
+          <button class="more-item" type="button"><span>家庭共享权限</span><span class="more-arrow">›</span></button>
+        </div>
+      </section>
+
+      <section class="section more-group card">
+        <div class="section-title">AI 与隐私</div>
+        <div class="more-list">
+          <button class="more-item" type="button"><span>AI 解读设置</span><span class="more-arrow">›</span></button>
+          <button class="more-item" type="button"><span>隐私说明</span><span class="more-arrow">›</span></button>
+          <button class="more-item" type="button"><span>免责声明</span><span class="more-arrow">›</span></button>
+        </div>
+      </section>
+
+      <section class="section more-group card">
+        <div class="section-title">关于我家手帖</div>
+        <div class="about-row"><span>当前版本</span><strong>0.3.1 内测版</strong></div>
+        <p class="about-copy">用于验证家庭健康档案、体检报告解读和长期提醒的核心流程。</p>
+      </section>
+    </section>
+    <nav class="bottom-tab" aria-label="底部导航">
+      <a class="tab-item" href="home-fixed.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>首页</span></a>
+      <a class="tab-item" href="family-fixed.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>家人</span></a>
+      <a class="tab-item" href="reports-fixed.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>报告</span></a>
+      <a class="tab-item active"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span></a>
+    </nav>
+  </main>
+  <script>
+    document.querySelectorAll('.more-item, .account-action').forEach((item) => {
+      item.addEventListener('click', () => {
+        item.classList.add('is-pressed');
+        window.setTimeout(() => item.classList.remove('is-pressed'), 160);
+      });
+    });
+  </script>
+</body>
+</html>

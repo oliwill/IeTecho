@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "reports-fixed.html",
+  "entry": "reports-fixed.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-06-25T08:02:24.011Z",
+  "updatedAt": "2026-06-25T08:02:24.011Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

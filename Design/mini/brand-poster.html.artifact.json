@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "brand-poster.html",
+  "entry": "brand-poster.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-06-25T09:30:42.214Z",
+  "updatedAt": "2026-06-25T09:30:42.214Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

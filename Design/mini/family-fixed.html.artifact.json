@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "family-fixed.html",
+  "entry": "family-fixed.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-06-25T08:02:24.010Z",
+  "updatedAt": "2026-06-25T08:02:24.010Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

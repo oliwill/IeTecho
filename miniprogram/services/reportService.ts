@@ -105,6 +105,18 @@ export const reportService = {
 
     const created = await callCloud<Report>('reportOps', { action: 'report.create', report })
     return { report: created }
+  },
+
+  /**
+   * 触发 AI 解读。调用 interpretReport 云函数（OCR + DeepSeek）。
+   * iOS 阶段：_cloud 实现换成 fetch 后端 /interpret，此方法不变。
+   */
+  async interpret(reportId: string): Promise<{ interpretationId: string }> {
+    if (!isCloudReady()) {
+      throw new Error('解读需要云环境')
+    }
+    const data = await callCloud<{ interpretationId: string }>('interpretReport', { reportId })
+    return data
   }
 }
 

@@ -1,53 +1,96 @@
 <view class="page-shell result-page">
   <view class="page-title">报告解读</view>
-  <view class="page-subtitle">2026-06-01｜我的体检报告</view>
 
-  <block wx:if="{{interpretation}}">
-  <view class="section card card-soft">
-    <view class="section-title">报告摘要</view>
-    <view class="result-copy">{{interpretation.summary}}</view>
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="section card">
+    <view class="loading-text">正在加载报告…</view>
   </view>
 
-  <view class="section">
-    <view class="section-header">
-      <view class="section-title">异常指标</view>
-      <status-tag text="待确认" tone="info" />
+  <!-- 解读中 -->
+  <block wx:elif="{{interpreting}}">
+    <view class="section interpreting-card card">
+      <view class="interpreting-icon">解</view>
+      <view class="interpreting-title">正在解读报告</view>
+      <view class="interpreting-desc">AI 正在识别报告内容并生成解读，约需 10-30 秒，请稍候。</view>
     </view>
-    <view class="stack-12">
-      <metric-annotation-card wx:for="{{abnormalMetrics}}" wx:key="id" metric="{{item}}" />
-    </view>
-  </view>
-
-  <view class="section card">
-    <view class="section-title">重点关注</view>
-    <view class="bullet" wx:for="{{interpretation.keyConcerns}}" wx:key="*this">{{item}}</view>
-  </view>
-
-  <view class="section card">
-    <view class="section-title">生活方式建议</view>
-    <view class="suggestion-group">
-      <view class="suggestion-title">饮食</view>
-      <view class="bullet" wx:for="{{interpretation.lifestyleSuggestions.diet}}" wx:key="*this">{{item}}</view>
-    </view>
-    <view class="suggestion-group">
-      <view class="suggestion-title">运动与习惯</view>
-      <view class="bullet" wx:for="{{interpretation.lifestyleSuggestions.exercise}}" wx:key="*this">{{item}}</view>
-      <view class="bullet" wx:for="{{interpretation.lifestyleSuggestions.habits}}" wx:key="*this">{{item}}</view>
-    </view>
-  </view>
-
-  <view class="section card">
-    <view class="section-title">复查 / 就医提醒</view>
-    <view class="bullet" wx:for="{{interpretation.followUpSuggestions}}" wx:key="*this">{{item}}</view>
-  </view>
-
-  <view class="section disclaimer-card card">
-    <view class="disclaimer-card__title">免责声明</view>
-    <view class="disclaimer-card__text">{{interpretation.disclaimer}}</view>
-  </view>
-
-  <view class="section">
-    <app-button variant="primary" bind:tapbutton="goConfirm">确认关键指标并保存</app-button>
-  </view>
   </block>
+
+  <!-- 解读失败 -->
+  <block wx:elif="{{failed}}">
+    <view class="section card">
+      <view class="empty-title">解读未能完成</view>
+      <view class="empty-desc">可能是报告图片不清晰，或 AI 服务暂时不可用。</view>
+      <view class="section action-stack">
+        <app-button variant="primary" bind:tapbutton="retry">重试</app-button>
+      </view>
+    </view>
+  </block>
+
+  <!-- 解读结果 -->
+  <block wx:elif="{{interpretation}}">
+    <view class="section card card-soft">
+      <view class="section-title">报告摘要</view>
+      <view class="result-copy">{{interpretation.summary}}</view>
+    </view>
+
+    <view wx:if="{{abnormalCount > 0}}" class="section">
+      <view class="section-header">
+        <view class="section-title">异常指标</view>
+        <status-tag text="待确认" tone="info" />
+      </view>
+      <view class="metric-stack">
+        <view wx:for="{{interpretation.abnormalMetrics}}" wx:key="index" class="metric-card card">
+          <view class="metric-head">
+            <view class="metric-name">{{item.metricName}}</view>
+            <status-tag text="{{item.statusText}}" tone="warning" />
+          </view>
+          <view class="metric-value">{{item.value}} <text class="metric-unit">{{item.unit}}</text></view>
+          <view class="metric-range">参考范围 {{item.referenceRange}}</view>
+          <view class="metric-explain">{{item.plainExplanation}}</view>
+          <view class="metric-next">{{item.nextSuggestion}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{interpretation.keyConcerns.length > 0}}" class="section card">
+      <view class="section-title">重点关注</view>
+      <view class="bullet" wx:for="{{interpretation.keyConcerns}}" wx:key="*this">{{item}}</view>
+    </view>
+
+    <view class="section card">
+      <view class="section-title">生活方式建议</view>
+      <view wx:if="{{interpretation.lifestyleSuggestions.diet.length > 0}}" class="suggestion-group">
+        <view class="suggestion-title">饮食</view>
+        <view class="bullet" wx:for="{{interpretation.lifestyleSuggestions.diet}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view wx:if="{{interpretation.lifestyleSuggestions.exercise.length > 0}}" class="suggestion-group">
+        <view class="suggestion-title">运动</view>
+        <view class="bullet" wx:for="{{interpretation.lifestyleSuggestions.exercise}}" wx:key="*this">{{item}}</view>
+      </view>
+      <view wx:if="{{interpretation.lifestyleSuggestions.habits.length > 0}}" class="suggestion-group">
+        <view class="suggestion-title">作息习惯</view>
+        <view class="bullet" wx:for="{{interpretation.lifestyleSuggestions.habits}}" wx:key="*this">{{item}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{interpretation.followUpSuggestions.length > 0}}" class="section card">
+      <view class="section-title">复查 / 就医提醒</view>
+      <view class="bullet" wx:for="{{interpretation.followUpSuggestions}}" wx:key="*this">{{item}}</view>
+    </view>
+
+    <view class="section disclaimer-card card">
+      <view class="disclaimer-card__title">免责声明</view>
+      <view class="disclaimer-card__text">{{interpretation.disclaimer}}</view>
+    </view>
+
+    <view wx:if="{{abnormalCount > 0}}" class="section">
+      <app-button variant="primary" bind:tapbutton="goConfirm">确认关键指标并保存</app-button>
+    </view>
+  </block>
+
+  <!-- 无解读且无异常 -->
+  <view wx:else class="section card">
+    <view class="empty-title">暂无解读</view>
+    <view class="empty-desc">这份报告还没有 AI 解读。</view>
+  </view>
 </view>

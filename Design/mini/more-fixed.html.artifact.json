@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "more-fixed.html",
+  "entry": "more-fixed.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-06-25T08:02:24.012Z",
+  "updatedAt": "2026-06-25T08:02:24.012Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}
