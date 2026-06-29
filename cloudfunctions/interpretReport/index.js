@@ -69,10 +69,15 @@ exports.main = async (event) => {
         if (!imgUrl) throw new Error('无法获取报告文件链接')
         ocrText = await ocrImage(imgUrl)
       } catch (err) {
-        console.warn('[interpretReport] OCR 失败', err && err.errMsg)
-        failHint = '未能从图片中识别出文字，请尝试更清晰的报告照片。'
+        console.warn('[interpretReport] OCR 失败', err && (err.ocrErrCode || err.errMsg || err.message))
+        // 把 OCR 真实错误透出，便于定位（配额/权限/图片格式等）
+        if (err && err.ocrErrCode) {
+          failHint = `OCR 识别失败（错误码 ${err.ocrErrCode}：${err.ocrErrMsg}）。常见原因：OCR 配额耗尽（100次/天）、小程序未认证、或图片格式不支持。`
+        } else {
+          failHint = '未能从图片获取链接或识别失败：' + (err && (err.errMsg || err.message) || '未知错误')
+        }
       }
-      if (ocrText.trim().length < 10) {
+      if (!failHint && ocrText.trim().length < 10) {
         failHint = '未识别到有效文字，可能是图片模糊或非文字报告，请重新拍摄清晰照片上传。'
       }
     } else {
@@ -126,8 +131,19 @@ exports.main = async (event) => {
 
 // ── OCR：微信云开发通用印刷体识别 ──────────────
 // 注意：云调用方法名是 printedText（不是 printText）；imgUrl 传纯字符串 URL。
+// 微信 SDK 在 OCR 出错时通常是 resolve（带 errCode/errmsg）而非 reject，
+// 所以必须显式检查 errCode，否则会把"配额不足/权限错误"误判成"没识别到文字"。
 async function ocrImage(imgUrl) {
   const res = await cloud.openapi.ocr.printedText({ imgUrl })
+  // 显式检查错误码
+  const errCode = res && typeof res.errCode === 'number' ? res.errCode : (res && res.errcode)
+  if (errCode && errCode !== 0) {
+    const errMsg = (res && (res.errMsg || res.errmsg)) || '未知错误'
+    const e = new Error(`OCR errCode=${errCode} ${errMsg}`)
+    e.ocrErrCode = errCode
+    e.ocrErrMsg = errMsg
+    throw e
+  }
   // res.items 数组，每项有 text
   const items = res && res.items ? res.items : []
   return items.map((it) => it.text || '').join('\n')
