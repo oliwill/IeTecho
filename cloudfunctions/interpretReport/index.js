@@ -19,9 +19,27 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 
 const db = cloud.database()
 
-// DeepSeek API（key 在云函数环境变量 DEEPSEEK_API_KEY，不入库）
+// DeepSeek API
+// key 读取顺序：云函数环境变量 DEEPSEEK_API_KEY（首选）
+//  → 兜底读同目录 config.json 的 environment（部分新版云开发控制台不再注入
+//    config.json.environment，这里做兜底保证可运行）。
+// 安全：config.json 已在 .gitignore，不入库。
 const DEEPSEEK_API = 'https://api.deepseek.com/chat/completions'
 const DEEPSEEK_MODEL = 'deepseek-chat'
+
+function loadDeepSeekApiKey() {
+  // 1) 环境变量（推荐方式，新版控制台可配）
+  if (process.env.DEEPSEEK_API_KEY) return process.env.DEEPSEEK_API_KEY
+  // 2) 兜底：读 config.json 文件（老式 config.environment，或本地调试）
+  try {
+    const cfg = require('./config.json')
+    const k = cfg && cfg.environment && cfg.environment.DEEPSEEK_API_KEY
+    if (k) return k
+  } catch (e) {
+    // config.json 不存在或解析失败，忽略，交给下面统一报错
+  }
+  return ''
+}
 
 exports.main = async (event) => {
   const { reportId } = event
@@ -64,17 +82,24 @@ exports.main = async (event) => {
       }
     } else if (fileType === 'image') {
       try {
-        const { fileList } = await cloud.getTempFileIDs({ fileList: [report.fileID] })
-        const imgUrl = fileList && fileList[0] && fileList[0].tempFileURL
-        if (!imgUrl) throw new Error('无法获取报告文件链接')
+        // 用云文件 ID 换临时链接。
+        // 注意方法名：是 cloud.getTempFileURL（单数 URL），不是 getTempFileIDs。
+        // 返回 fileList[i].{ fileID, tempFileURL, status, errMsg }。
+        const { fileList } = await cloud.getTempFileURL({ fileList: [report.fileID] })
+        const item = fileList && fileList[0]
+        const status = item && item.status
+        if (status !== 0 || !item || !item.tempFileURL) {
+          throw new Error('无法获取报告文件链接：' + ((item && item.errMsg) || `status=${status}`))
+        }
+        const imgUrl = item.tempFileURL
         ocrText = await ocrImage(imgUrl)
       } catch (err) {
-        console.warn('[interpretReport] OCR 失败', err && (err.ocrErrCode || err.errMsg || err.message))
+        console.warn('[interpretReport] 取链接/OCR 失败', err && (err.ocrErrCode || err.errMsg || err.message))
         // 把 OCR 真实错误透出，便于定位（配额/权限/图片格式等）
         if (err && err.ocrErrCode) {
           failHint = `OCR 识别失败（错误码 ${err.ocrErrCode}：${err.ocrErrMsg}）。常见原因：OCR 配额耗尽（100次/天）、小程序未认证、或图片格式不支持。`
         } else {
-          failHint = '未能从图片获取链接或识别失败：' + (err && (err.errMsg || err.message) || '未知错误')
+          failHint = '未能从图片获取链接或识别失败：' + ((err && (err.errMsg || err.message)) || '未知错误')
         }
       }
       if (!failHint && ocrText.trim().length < 10) {
@@ -125,7 +150,20 @@ exports.main = async (event) => {
   } catch (err) {
     // 失败时标记报告解读失败
     await patchReport(userId, reportId, { interpretationStatus: 'failed' }).catch(() => {})
-    return { ok: false, error: String(err && err.errMsg ? err.errMsg : err) }
+    const raw = String(err && err.errMsg ? err.errMsg : err)
+    console.warn('[interpretReport] 整体失败:', raw)
+    // 把常见错误翻译成用户能看懂的提示，方便下一步操作
+    let friendly = raw
+    if (/timed out|timeout|超时/i.test(raw)) {
+      friendly = 'AI 解读超时，请稍后重试。若多次超时，可能是网络波动或报告内容过多。'
+    } else if (/ECONNRESET|ETIMEDOUT|ENOTFOUND|fetch failed|getaddrinfo/i.test(raw)) {
+      friendly = '网络连接异常，无法访问 AI 服务，请检查网络后重试。'
+    } else if (/401|Unauthorized|invalid api key/i.test(raw)) {
+      friendly = 'AI 服务鉴权失败（API Key 无效或已过期），请联系管理员。'
+    } else if (/429|rate limit|quota/i.test(raw)) {
+      friendly = 'AI 服务调用额度不足，请稍后重试。'
+    }
+    return { ok: false, error: friendly, rawError: raw }
   }
 }
 
@@ -135,10 +173,11 @@ exports.main = async (event) => {
 // 所以必须显式检查 errCode，否则会把"配额不足/权限错误"误判成"没识别到文字"。
 async function ocrImage(imgUrl) {
   const res = await cloud.openapi.ocr.printedText({ imgUrl })
-  // 显式检查错误码
-  const errCode = res && typeof res.errCode === 'number' ? res.errCode : (res && res.errcode)
-  if (errCode && errCode !== 0) {
-    const errMsg = (res && (res.errMsg || res.errmsg)) || '未知错误'
+
+  // 显式检查错误码（兼容 errcode / errCode / ErrorCode 三种可能的字段名）
+  const errCode = res && (res.errcode != null ? res.errcode : (res.errCode != null ? res.errCode : res.ErrorCode))
+  if (errCode != null && errCode !== 0) {
+    const errMsg = (res && (res.errmsg || res.errMsg || res.ErrorMsg)) || '未知错误'
     const e = new Error(`OCR errCode=${errCode} ${errMsg}`)
     e.ocrErrCode = errCode
     e.ocrErrMsg = errMsg
@@ -146,7 +185,7 @@ async function ocrImage(imgUrl) {
   }
   // res.items 数组，每项有 text
   const items = res && res.items ? res.items : []
-  return items.map((it) => it.text || '').join('\n')
+  return items.map((it) => (it && it.text) || '').join('\n')
 }
 
 // ── PDF 文本提取：电子版 PDF 直接抽文字，又快又准 ──
@@ -164,9 +203,9 @@ async function extractTextFromPdf(fileID) {
 
 // ── DeepSeek 解读 ──────────────────────────────
 async function interpretWithDeepSeek(ocrText, report) {
-  const apiKey = process.env.DEEPSEEK_API_KEY
+  const apiKey = loadDeepSeekApiKey()
   if (!apiKey) {
-    throw new Error('DEEPSEEK_API_KEY 环境变量未配置')
+    throw new Error('DEEPSEEK_API_KEY 未配置（环境变量与 config.json 均未提供）')
   }
 
   const systemPrompt = buildSystemPrompt()
@@ -279,6 +318,10 @@ async function patchReport(userId, id, patch) {
 }
 
 // ── HTTP POST（云函数无 fetch，用 Node https）──
+// timeout：DeepSeek 推理通常 5-20s，给到 45s 兜底（必须 < 云函数 timeout 60s，
+// 留出 OCR 等前置耗时和收尾的余量）。这样 DeepSeek 卡死时能拿到清晰的超时报错，
+// 而不是被云函数整体超时静默 kill。
+const DEEPSEEK_HTTP_TIMEOUT_MS = 45000
 async function httpsPostJson(url, body, headers) {
   return new Promise((resolve, reject) => {
     const https = require('https')
@@ -304,6 +347,10 @@ async function httpsPostJson(url, body, headers) {
         })
       }
     )
+    // 显式 HTTP 超时：避免 DeepSeek 卡死时请求永远挂起
+    req.setTimeout(DEEPSEEK_HTTP_TIMEOUT_MS, () => {
+      req.destroy(new Error(`DeepSeek 响应超时（${DEEPSEEK_HTTP_TIMEOUT_MS / 1000}s）`))
+    })
     req.on('error', reject)
     req.write(payload)
     req.end()

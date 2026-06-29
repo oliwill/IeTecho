@@ -12,6 +12,7 @@ Page({
     loading: true,
     interpreting: false, // 解读中
     failed: false, // 解读失败
+    failedReason: '' as string, // 失败原因（展示给用户）
     interpretation: null as Interpretation | null,
     abnormalCount: 0
   },
@@ -89,7 +90,19 @@ Page({
       this.startPoll()
     } catch (err) {
       console.warn('[report-result] startInterpret failed', err)
-      this.setData({ interpreting: false, failed: true })
+      // 提取错误文案：云函数业务错误(带友好提示) 或 SDK 层错误(超时/网络)
+      const raw = (err && (err.error || err.message)) || ''
+      let reason = raw
+      if (/timed out|timeout|超时|-504003/i.test(raw)) {
+        reason = 'AI 解读超时，请稍后重试。若多次超时，可能是网络波动或报告内容过多。'
+      } else if (/网络|network|ECONNRESET|ETIMEDOUT|fail/i.test(raw) && !reason) {
+        reason = '网络异常，请检查网络后重试。'
+      }
+      this.setData({
+        interpreting: false,
+        failed: true,
+        failedReason: reason
+      })
     }
   },
 
@@ -124,7 +137,7 @@ Page({
   },
 
   retry() {
-    this.setData({ failed: false, interpreting: true, loading: true })
+    this.setData({ failed: false, failedReason: '', interpreting: true, loading: true })
     this.loadInterpretation()
   },
 

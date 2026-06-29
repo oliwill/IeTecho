@@ -19,7 +19,7 @@
   <block wx:elif="{{failed}}">
     <view class="section card">
       <view class="empty-title">解读未能完成</view>
-      <view class="empty-desc">可能是报告图片不清晰，或 AI 服务暂时不可用。</view>
+      <view class="empty-desc">{{failedReason || '可能是报告图片不清晰，或 AI 服务暂时不可用。'}}</view>
       <view class="section action-stack">
         <app-button variant="primary" bind:tapbutton="retry">重试</app-button>
       </view>

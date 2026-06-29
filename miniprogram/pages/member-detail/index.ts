@@ -23,6 +23,12 @@ Page({
   },
   async onLoad(options) {
     const member = (await memberService.getById(options?.memberId || '')) || null
+    // 规范化数字字段：member 可能缺少 abnormalMetricCount/reminderCount，
+    // 传 undefined 给 Number 类型属性会触发"type-uncompatible"警告，这里兜底成 0。
+    if (member) {
+      member.abnormalMetricCount = Number(member.abnormalMetricCount) || 0
+      member.reminderCount = Number(member.reminderCount) || 0
+    }
     const memberId = member?.id || ''
     const reports = memberId ? await reportService.getByMember(memberId) : []
     const recentReport = reports[0] || null
