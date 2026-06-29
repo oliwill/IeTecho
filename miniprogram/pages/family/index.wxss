@@ -1,26 +1,8 @@
-.family-page__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-4);
-}
-
-.family-page__add {
-  width: 44px;
-  height: 44px;
-  border-radius: 16px;
+.family-page__tail-add {
+  min-height: 52px;
+  border-radius: var(--radius-pill);
   background: var(--color-primary);
   color: var(--color-text-inverse);
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 44px;
-}
-
-.family-page__tail-add {
-  min-height: 48px;
-  border-radius: var(--radius-lg);
-  background: var(--color-primary-soft);
-  color: var(--color-primary-deep);
   font-size: var(--font-body);
   font-weight: 800;
 }

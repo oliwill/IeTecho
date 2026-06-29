@@ -10,7 +10,7 @@
     <view class="card empty-card">
       <view class="empty-title">还没有上传过报告</view>
       <view class="empty-desc">上传一份体检报告，可以在这里持续追踪解读和指标确认。</view>
-      <button class="btn-primary" bindtap="tapUpload">上传我的体检报告</button>
+      <button class="secondary-btn upload-cta" bindtap="tapUpload">＋ 上传我的体检报告</button>
     </view>
   </block>
 
@@ -18,9 +18,6 @@
     <view class="section">
       <view class="report-item card" wx:for="{{reports}}" wx:key="id" data-id="{{item.id}}" bindtap="tapReport">
         <view class="report-row">
-          <view class="report-doc">
-            <view class="report-doc__fold"></view>
-          </view>
           <view class="report-main">
             <view class="report-title">{{item.title}}</view>
             <view class="report-meta">{{item.memberName}} · {{item.reportDate}}</view>
@@ -31,5 +28,5 @@
     </view>
   </block>
 
-  <button class="btn-primary fab" bindtap="tapUpload">+ 上传新报告</button>
+  <button class="secondary-btn upload-cta" bindtap="tapUpload">＋ 上传新报告</button>
 </view>

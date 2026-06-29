@@ -1,22 +1,51 @@
 <view class="page-shell more-page">
   <view class="page-title">更多</view>
-  <view class="page-subtitle">低频设置、隐私说明和产品边界都放在这里。</view>
+  <view class="page-subtitle">管理家人的健康数据、提醒规则和隐私授权。</view>
 
-  <view class="section more-group card">
-    <view class="section-title">常用</view>
-    <button class="more-item" bindtap="showMock">提醒管理<text>›</text></button>
-    <button class="more-item" bindtap="showMock">数据导出<text>›</text></button>
+  <!-- 当前家庭账户（静态 Mock） -->
+  <view class="section account-card card">
+    <view class="account-main">
+      <view class="account-avatar">我</view>
+      <view class="account-copy">
+        <view class="account-name">{{familyName}}</view>
+        <view class="account-meta">已守护 {{memberCount}} 位家人 · 最近同步 {{syncTime}}</view>
+      </view>
+    </view>
+    <button class="secondary-btn account-action tap-scale" bindtap="showMock">管理家庭成员</button>
   </view>
 
+  <!-- 数据保护 -->
+  <view class="section privacy-card card">
+    <view class="privacy-main">
+      <view class="section-title">数据保护</view>
+      <view class="privacy-copy">报告原件仅用于本次解读，敏感字段已默认隐藏，可随时导出或删除。</view>
+    </view>
+    <view class="privacy-tag">本机可控</view>
+  </view>
+
+  <!-- 常用管理 -->
+  <view class="section more-group card">
+    <view class="section-title">常用管理</view>
+    <button class="more-item" bindtap="showMock">提醒管理<text class="more-arrow">›</text></button>
+    <button class="more-item" bindtap="showMock">数据导出<text class="more-arrow">›</text></button>
+    <button class="more-item" bindtap="showMock">家庭共享权限<text class="more-arrow">›</text></button>
+  </view>
+
+  <!-- AI 与隐私 -->
   <view class="section more-group card">
     <view class="section-title">AI 与隐私</view>
-    <button class="more-item" bindtap="showAiNotice">AI 设置<text>›</text></button>
-    <button class="more-item" bindtap="showPrivacy">隐私说明<text>›</text></button>
-    <button class="more-item" bindtap="showDisclaimer">免责声明<text>›</text></button>
+    <button class="more-item" bindtap="showAiNotice">AI 解读设置<text class="more-arrow">›</text></button>
+    <button class="more-item" bindtap="showPrivacy">隐私说明<text class="more-arrow">›</text></button>
+    <button class="more-item" bindtap="showDisclaimer">免责声明<text class="more-arrow">›</text></button>
   </view>
 
+  <!-- 关于我家手帖 -->
   <view class="section more-group card">
-    <view class="section-title">关于</view>
-    <view class="more-copy">IeTecho 静态 Mock。当前版本只用于验证页面结构和视觉方向。</view>
+    <view class="section-title">关于我家手帖</view>
+    <view class="about-row">
+      <text>当前版本</text>
+      <text class="about-version">{{version}}</text>
+    </view>
+    <view class="about-copy">用于验证家庭健康档案、体检报告解读和长期提醒的核心流程。</view>
   </view>
 </view>

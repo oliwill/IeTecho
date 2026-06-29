@@ -54,9 +54,18 @@
   </view>
   </block>
 
-  <view wx:else class="section card detail-empty">
-    <view class="detail-empty__title">还没有这个成员的档案</view>
-    <view class="detail-empty__desc">当前云端还没有该成员数据。先去上传一份报告或创建档案，资料会按成员归档。</view>
-    <app-button variant="primary" bind:tapbutton="goUpload">上传报告</app-button>
+  <view wx:else class="empty-panel card">
+    <view class="empty-panel__mark">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21s7-4.4 7-11.2A4.8 4.8 0 0 0 12 5.6 4.8 4.8 0 0 0 5 9.8C5 16.6 12 21 12 21Z" />
+        <path d="M12 8v5M9.5 10.5h5" />
+      </svg>
+    </view>
+    <view class="empty-panel__title">还没有成员档案</view>
+    <view class="empty-panel__desc">当前成员还没有上传报告或填写基础信息，所以暂时没有可展示的健康记录。</view>
+    <view class="empty-panel__actions">
+      <app-button variant="primary" bind:tapbutton="goUpload">上传一份报告</app-button>
+      <app-button variant="secondary" bind:tapbutton="goEdit">完善基础信息</app-button>
+    </view>
   </view>
 </view>

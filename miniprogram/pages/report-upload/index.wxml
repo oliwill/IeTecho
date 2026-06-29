@@ -35,12 +35,29 @@
 
       <view wx:else class="source-buttons">
         <view class="source-btn tap-scale" catchtap="chooseFile">
-          <view class="source-btn__icon">聊</view>
+          <view class="source-btn__icon">
+            <!-- 聊天气泡：从聊天选择文件 -->
+            <view class="source-btn__svg">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 5.5h16v10H7l-3 3v-13Z" />
+                <path d="M8 9h8M8 12h5" />
+              </svg>
+            </view>
+          </view>
           <view class="source-btn__title">从聊天选择</view>
           <view class="source-btn__desc">微信聊天里收到的 PDF / 图片</view>
         </view>
         <view class="source-btn tap-scale" catchtap="chooseFromAlbum">
-          <view class="source-btn__icon">册</view>
+          <view class="source-btn__icon">
+            <!-- 相册：从本地相册选择 -->
+            <view class="source-btn__svg">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="5" width="16" height="14" rx="2" />
+                <path d="m7 16 3.5-4 3 3 2-2.4L19 16" />
+                <circle cx="9" cy="9" r="1.2" />
+              </svg>
+            </view>
+          </view>
           <view class="source-btn__title">从相册选择</view>
           <view class="source-btn__desc">本地相册里的报告照片</view>
         </view>
@@ -51,7 +68,7 @@
     <view class="section form-card card">
       <view class="form-item">
         <view class="form-label">报告类型</view>
-        <view class="chip-row">
+        <view class="chip-row chip-row--center">
           <view
             wx:for="{{reportTypes}}"
             wx:key="value"

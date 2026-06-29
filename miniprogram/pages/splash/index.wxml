@@ -1,0 +1,12 @@
+<!-- 启动页：冷启动入口，停留后自动跳首页 -->
+<!-- 主视觉为位图（images/splash/splash.webp），底部叠加品牌字 -->
+<view class="splash">
+  <image class="splash-art" src="/images/splash/splash.webp" mode="aspectFill" />
+
+  <!-- 品牌区：落在底部留白处 -->
+  <view class="brand">
+    <view class="brand__title">我家手帖</view>
+    <view class="brand__sub">家の健康手帖</view>
+    <view class="brand__tagline">把每一次体检，记成一封家书</view>
+  </view>
+</view>

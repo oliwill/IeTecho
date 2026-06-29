@@ -57,21 +57,45 @@
   font-weight: 700;
 }
 
-/* 空态：该成员在云端尚无数据 */
-.detail-empty {
+/* 空态：当前成员还没有数据，居中面板引导上传或完善资料 */
+.empty-panel {
+  min-height: 570px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
   text-align: center;
+  padding: var(--space-10) var(--space-6) 120px;
 }
 
-.detail-empty__title {
-  font-size: var(--font-card-title);
+.empty-panel__mark {
+  width: 64px;
+  height: 64px;
+  margin-bottom: var(--space-5);
+  border-radius: var(--radius-xl);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-panel__title {
+  font-size: var(--font-section-title);
+  line-height: 1.3;
   font-weight: 800;
-  color: var(--color-text-primary);
 }
 
-.detail-empty__desc {
-  margin-top: var(--space-2);
-  margin-bottom: var(--space-4);
+.empty-panel__desc {
+  margin: var(--space-2) auto 0;
   color: var(--color-text-secondary);
   font-size: var(--font-body-small);
   line-height: 1.55;
+  max-width: 23ch;
+}
+
+.empty-panel__actions {
+  margin-top: var(--space-5);
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
 }
