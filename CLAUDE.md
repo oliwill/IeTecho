@@ -36,26 +36,42 @@ IeTecho 是一个家庭健康档案与体检报告解读产品。
 
 ## 当前阶段
 
-截至 2026-06-12，项目处于 **P0 静态 Mock 阶段**。
+截至 2026-06-29，项目处于 **P2 AI 解读（代码完成，待真机验证）**。
 
 已完成：
 
-- 产品设计文档。
-- 页面原型与状态矩阵。
-- 组件规格、视觉系统、动效规范。
-- qiaomu-ai-prd 风格项目管理 PRD。
-- 原生微信小程序静态 Mock 工程。
+- P0 静态 Mock：页面原型、状态矩阵、组件/视觉/动效规范、PRD、原生小程序工程。
+- P1 云开发接入：4 云函数（memberOps/reportOps/exportData/getDashboard）、5 集合、多用户隔离（真机验证）、报告上传（聊天/相册 → 云存储）。
+- P1 报告上传闭环：reportService.upload、report-upload 双入口、member-detail 录入入口。
+- P2 AI 解读：interpretReport 云函数（微信 OCR → DeepSeek 结构化 JSON）、report-result 四态轮询、reportService.interpret。
 
-未完成：
+待完成：
 
-- 微信云开发。
-- AI API。
-- 真实文件上传。
-- OCR。
-- ECharts。
-- Lottie。
-- 订阅消息。
-- 登录和真实持久化。
+- AI 解读真机验证（上传清晰化验单 → 自动解读）。
+- 指标确认入库（metric-confirm 真实写库）。
+- metric/reminder/interpretation service 接云函数（当前仍 mock）。
+- 提醒系统、订阅消息、ECharts 趋势图、Lottie 动效。
+
+## 本地私密配置（不入库，换电脑需重建）
+
+```text
+miniprogram/config/cloud.local.ts              云开发 env ID（从 cloud.local.example.ts 复制）
+cloudfunctions/interpretReport/config.json     DeepSeek key + OCR 权限（从 config.example.json 复制）
+```
+
+仓库保持 touristappid，真实 AppID 本地保留。这两个文件已在 .gitignore。
+
+## 云函数清单
+
+```text
+cloudfunctions/memberOps/         成员增删改查（action: list/get/getFirstUse/create/update/remove）
+cloudfunctions/reportOps/         报告+指标+解读（report.* / metric.* / interp.* / trend.*）
+cloudfunctions/exportData/        导出平台无关 JSON（iOS 迁移前置）
+cloudfunctions/getDashboard/      首页聚合（自动识别 firstUse / multiFamily）
+cloudfunctions/interpretReport/   AI 解读（OCR + DeepSeek，key 在 config.json）
+```
+
+云函数取 openid 必须用 `cloud.getWXContext()`（不是 context.OPENID，那个为 null）。get 类查询必须先按业务 id 再按 _id。
 
 ## 硬约束
 
@@ -79,24 +95,25 @@ IeTecho 是一个家庭健康档案与体检报告解读产品。
 
 ```text
 miniprogram/
-├─ app.json              # 页面和 Tab 配置
-├─ app.ts                # 小程序入口，静态 Mock 阶段不初始化云开发
+├─ app.json              # 页面和 Tab 配置（4 Tab）
+├─ app.ts                # 小程序入口，onLaunch 初始化 wx.cloud.init
 ├─ app.wxss              # 全局样式入口
 ├─ pages/                # 页面（UI 层）
 ├─ components/           # 组件（UI 层）
 ├─ services/             # 数据访问收口层，UI 唯一数据入口（Service 层）
 ├─ styles/               # WXSS token、布局、动效
 ├─ models/               # TypeScript 数据类型
-├─ data/                 # mock 数据
+├─ data/                 # mock 数据（service 的回退数据源）
+├─ config/               # cloud.ts（env 读取）+ cloud.local.example.ts
 └─ utils/                # 路由、状态等工具
 ```
 
 根配置：
 
 ```text
-project.config.json      # 微信开发者工具配置，当前 appid 为 touristappid
-tsconfig.json            # TypeScript 配置
-.gitignore               # 排除本地 skill 和私有配置
+project.config.json      # 微信开发者工具配置，appid 为 touristappid（真实不入库）
+tsconfig.json            # TypeScript 配置，moduleResolution: node
+.gitignore               # 排除 cloud.local.ts / config.json / 私有配置
 ```
 
 ## 当前页面清单
@@ -106,12 +123,13 @@ tsconfig.json            # TypeScript 配置
 ```text
 pages/home/index            首页
 pages/family/index          家人
-pages/more/index            更多
-pages/member-detail/index   成员详情
+pages/reports/index         报告 Tab（跨家人报告列表）
+pages/more/index            我的
+pages/member-detail/index   成员详情（含底部录入入口）
 pages/member-edit/index     添加 / 编辑家人
-pages/report-upload/index   报告上传
+pages/report-upload/index   报告上传（聊天/相册双入口，固定底部提交）
 pages/interpreting/index    解读中
-pages/report-result/index   报告解读结果
+pages/report-result/index   报告解读结果（四态轮询）
 pages/metric-confirm/index  指标确认
 ```
 

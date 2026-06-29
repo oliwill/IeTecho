@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-06-29
+
+### Added
+
+- P1 云开发：4 云函数（memberOps/reportOps/exportData/getDashboard）+ 5 集合 + 多用户隔离（真机验证通过）。
+- P1 报告上传闭环：reportService.upload（前端直传云存储 + 写库）、report-upload 双入口（聊天/相册）、member-detail 底部录入入口、app-button 加 loading/disabled。
+- P2 AI 解读：interpretReport 云函数（微信 OCR → DeepSeek 结构化 JSON）、report-result 页四态轮询（加载/解读中/失败/成功）、reportService.interpret、interpretationService.getByReport。
+- 本地私密配置机制：cloud.local.ts（env ID）、config.json（DeepSeek key + OCR 权限），均不入库。
+- seed/ 种子数据、Design/ 设计原型。
+
+### Fixed
+
+- 云函数取 openid 改用 `cloud.getWXContext()`（context.OPENID 为 null）。
+- 云函数 get 查询改业务 id + _id 双查（原仅 _id 查询查不到记录）。
+- 云函数 context 未定义 bug、status-tag null 兜底、services 目录 import 解析。
+
+### Changed
+
+- 当前阶段推进到 P2 AI 解读（代码完成，待真机验证）。
+
 ## 2026-06-18
 
 ### Added

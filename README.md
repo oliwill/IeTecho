@@ -6,12 +6,12 @@ IeTecho 是一个家庭健康档案与体检报告解读产品，目标是帮助
 
 ## 当前阶段
 
-截至 2026-06-17，项目处于 **P0 静态 Mock 阶段**：
+截至 2026-06-29，项目处于 **P2 AI 解读（代码完成，待真机验证）**：
 
-- 已完成产品设计、页面原型、状态矩阵、视觉系统、动效规范、PRD 和平台决策。
-- 已确认三层分离架构（UI / Service / 后端），数据访问收口到 `miniprogram/services/`。
-- 已创建可由微信开发者工具打开的原生微信小程序静态工程。
-- 当前不接微信云开发、不接 AI API、不做真实上传、不接 OCR、不接 ECharts、不接 Lottie。
+- P0 静态 Mock ✅、P1 云开发接入 ✅、P1 报告上传 ✅、P2 AI 解读代码 ✅。
+- 微信云开发：4 云函数（memberOps/reportOps/exportData/getDashboard）+ interpretReport + 5 集合 + 多用户隔离（真机验证）。
+- AI 解读：interpretReport 云函数（微信 OCR → DeepSeek 结构化 JSON）+ report-result 页四态轮询。
+- 待做：AI 解读真机验证、指标确认入库、metric/reminder/interpretation service 接云函数、提醒系统、ECharts、Lottie。
 
 ## 产品边界
 
@@ -36,29 +36,40 @@ IeTecho/
 │  ├─ wireframes/  # 页面原型与状态矩阵
 │  ├─ design/      # 组件、视觉系统、动效规范
 │  └─ prd-family-health-miniapp-project-management.md
-├─ miniprogram/    # 微信小程序静态 Mock 工程
-│  ├─ app.json
-│  ├─ app.ts
-│  ├─ app.wxss
+├─ miniprogram/    # 微信小程序工程（P0 静态 Mock + P1/P2 实现）
+│  ├─ app.json / app.ts / app.wxss
 │  ├─ pages/       # 页面（UI 层）
 │  ├─ components/  # 组件（UI 层）
-│  ├─ services/    # 数据访问收口层（Service 层，待建）
-│  ├─ styles/
-│  ├─ models/
-│  ├─ data/
-│  └─ utils/
-├─ project.config.json
-├─ tsconfig.json
-└─ .gitignore
+│  ├─ services/    # 数据访问收口层（Service 层）
+│  ├─ styles/ models/ data/ utils/
+│  └─ config/      # cloud.ts + cloud.local.example.ts（local 不入库）
+├─ cloudfunctions/ # 云函数（memberOps/reportOps/exportData/getDashboard/interpretReport）
+├─ seed/           # 种子数据（openid 用占位，不入库真实 openid）
+├─ Design/         # 高保真设计原型 HTML
+├─ Mobile-App/     # OpenDesign 导出产物
+├─ project.config.json / tsconfig.json / .gitignore
 ```
 
-## 如何打开
+## 如何打开（换电脑必看）
 
-1. 打开微信开发者工具。
-2. 导入项目目录：`E:/Git/ClaudeCode/IeTecho`。
-3. 小程序源码目录：`miniprogram/`。
-4. 当前 `project.config.json` 使用 `touristappid`，正式开发前需要替换为实际小程序 AppID。
-5. 编译后应看到底部 Tab：`首页 / 家人 / 报告 / 我的`。
+仓库不含私密信息，克隆后需重建两个本地配置文件：
+
+```text
+1. miniprogram/config/cloud.local.ts
+   从 cloud.local.example.ts 复制，填入云开发环境 ID
+
+2. cloudfunctions/interpretReport/config.json
+   从 config.example.json 复制，填入 DeepSeek API key
+
+3. 微信开发者工具打开 E:/Git/ClaudeCode/IeTecho
+   project.config.json 的 appid 本地改回真实 AppID（不入库）
+
+4. cloudfunctions/ 每个目录右键 → 创建并部署：云端安装依赖
+
+5. 云开发控制台确认 5 个集合存在、权限为「仅创建者可读写」
+
+6. 编译后应看到底部 Tab：首页 / 家人 / 报告 / 我的
+```
 
 ## 当前页面
 
@@ -67,12 +78,13 @@ IeTecho/
 ```text
 pages/home/index            首页
 pages/family/index          家人
-pages/more/index            更多
-pages/member-detail/index   成员详情
+pages/reports/index         报告 Tab（跨家人报告列表）
+pages/more/index            我的
+pages/member-detail/index   成员详情（含底部录入入口）
 pages/member-edit/index     添加 / 编辑家人
-pages/report-upload/index   报告上传
+pages/report-upload/index   报告上传（聊天/相册双入口）
 pages/interpreting/index    解读中
-pages/report-result/index   报告解读结果
+pages/report-result/index   报告解读结果（四态轮询）
 pages/metric-confirm/index  指标确认
 ```
 
@@ -117,48 +129,43 @@ trend-chart-card
 8. `docs/design/family-health-miniapp-motion-spec.md` — 动效边界。
 9. `docs/plans/2026-06-12-family-health-miniapp-prototype-implementation.md` — 静态 Mock 转实现计划。
 
-## P0 验收路径
+## Git 注意事项
 
-在微信开发者工具中手动验证：
-
-```text
-首页
-→ 上传报告
-→ 解读中
-→ 报告解读结果
-→ 指标确认
-→ 成员详情
-```
-
-同时验证：
+`.gitignore` 已排除（含本地私密配置）：
 
 ```text
-家人页 → 成员详情
-家人页 → 添加 / 编辑家人
-首页 → 最近报告 → 报告解读结果
-更多页 → 免责声明弹窗
+.agents/
+skills-lock.json
+project.private.config.json
+node_modules/
+miniprogram/miniprogram_npm/
+miniprogram/config/cloud.local.ts          # 云开发 env ID
+cloudfunctions/interpretReport/config.json  # DeepSeek API key
+.DS_Store
 ```
+
+仓库保持 `touristappid`，真实 AppID / env ID / DeepSeek key 均不入库。提交时只纳入项目代码和文档。
 
 ## 下一步开发建议
 
-P1 目标：把静态 Mock 变成可持久化的最小可用版本。
+当前首要：**验证 P2 AI 解读**。
 
-建议顺序：
+```text
+报告 Tab → 上传报告 → 选「我」→ 从相册选一张清晰化验单图片
+→ 保存 → 自动跳解读页 → 显示「正在解读报告」
+→ 等待 10-30 秒 → 出解读结果（摘要/异常指标/建议/复查提醒）
+```
 
-1. 建立 `miniprogram/services/`，把页面读 mock 的逻辑下沉到 service（三层分离前置）。
-2. 替换真实小程序 AppID。
-3. 启用微信云开发环境。
-4. 实现微信登录和默认「我」（预留自有 user id 字段，不依赖 `_openid`）。
-5. 建立云数据库集合：`members`、`reports`、`metric_records`、`reminders`、`interpretations`。
-6. 接入云存储上传报告文件。
-7. 实现 AI 解读云函数（纯 Node，业务逻辑可复用）。
-8. 实现指标确认后入库。
-9. 实现小程序内提醒管理。
-10. 实现 `exportService` 数据导出（iOS 迁移前置）。
+验证通过后的后续 P2/P3：
 
-接入云开发时只替换 `services/` 内部实现，页面和组件不动。
+1. 指标确认入库（report-result → metric-confirm 真实写库）。
+2. metric/reminder/interpretation service 接云函数（当前仍 mock）。
+3. 提醒系统 + 订阅消息。
+4. ECharts 趋势图、Lottie 动效。
 
-P1 仍不建议先做：多人共享、医生端、社区、药品管理、复杂健康评分。
+接入云函数时只替换 `services/` 内部实现，页面和组件不动。三层分离是硬约束。
+
+仍不建议做：多人共享、医生端、社区、药品管理、复杂健康评分。
 
 ## Git 注意事项
 
