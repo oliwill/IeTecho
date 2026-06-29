@@ -2,6 +2,13 @@ import { interpretationService } from '../../services/index'
 import { showMockToast } from '../../utils/route'
 
 Page({
+  data: {
+    // 当前家庭账户：静态 Mock
+    familyName: '林小雨的家',
+    memberCount: 3,
+    syncTime: '14:20',
+    version: '0.3.1 内测版'
+  },
   showMock() {
     showMockToast('静态 Mock 阶段暂未实现')
   },

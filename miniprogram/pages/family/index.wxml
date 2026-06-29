@@ -1,10 +1,7 @@
 <view class="page-shell family-page">
-  <view class="family-page__header">
-    <view>
-      <view class="page-title">家人</view>
-      <view class="page-subtitle">每个人都是一本持续更新的健康档案。</view>
-    </view>
-    <button class="family-page__add tap-scale" bindtap="goEdit">＋</button>
+  <view>
+    <view class="page-title">家人</view>
+    <view class="page-subtitle">每个人都是一本持续更新的健康档案。</view>
   </view>
 
   <view class="section stack-12" wx:if="{{isFirstUse && firstUseMember}}">
