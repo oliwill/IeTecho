@@ -4,6 +4,7 @@
   "description": "AI 报告解读：OCR 提取 + DeepSeek 结构化解读（IeTecho P2）",
   "main": "index.js",
   "dependencies": {
+    "pdf-parse": "^1.1.1",
     "wx-server-sdk": "~2.6.3"
   }
 }

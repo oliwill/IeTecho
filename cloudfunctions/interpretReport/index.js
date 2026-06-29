@@ -41,30 +41,51 @@ exports.main = async (event) => {
     // 标记解读中
     await patchReport(userId, reportId, { interpretationStatus: 'interpreting' })
 
-    // 2. 取图片临时链接（OCR 需要可访问的 URL）
-    const { fileList } = await cloud.getTempFileIDs({ fileList: [report.fileID] })
-    const imgUrl = fileList && fileList[0] && fileList[0].tempFileURL
-    if (!imgUrl) {
-      throw new Error('无法获取报告文件链接')
-    }
+    // 2. 按文件类型分流提取文字
+    //    - PDF：云函数直接下载 Buffer → pdf-parse 抽文字（电子版 PDF 又快又准）
+    //    - 图片：取临时链接 → 微信 OCR printedText
+    const fileType = report.fileType || (report.fileID && /\.pdf$/i.test(report.fileID) ? 'pdf' : 'image')
 
-    // 3. OCR 提取文本
     let ocrText = ''
-    try {
-      ocrText = await ocrImage(imgUrl)
-    } catch (err) {
-      // OCR 失败时降级：让 DeepSeek 仅基于报告元信息给通用建议
-      console.warn('[interpretReport] OCR 失败，降级处理', err && err.errMsg)
-      ocrText = ''
+    let failHint = '' // 失败时的针对性提示
+
+    if (fileType === 'pdf') {
+      try {
+        const { text, isScanned } = await extractTextFromPdf(report.fileID)
+        if (isScanned || text.length < 10) {
+          // 扫描件：PDF 里全是图片，pdf-parse 提不到文字
+          failHint = '该 PDF 是扫描件（纯图片），无法直接识别文字。请用相机拍照后以「图片」重新上传。'
+        } else {
+          ocrText = text
+        }
+      } catch (err) {
+        console.warn('[interpretReport] PDF 文本提取失败', err && err.message)
+        failHint = 'PDF 文本提取失败，请尝试拍照后以「图片」重新上传。'
+      }
+    } else if (fileType === 'image') {
+      try {
+        const { fileList } = await cloud.getTempFileIDs({ fileList: [report.fileID] })
+        const imgUrl = fileList && fileList[0] && fileList[0].tempFileURL
+        if (!imgUrl) throw new Error('无法获取报告文件链接')
+        ocrText = await ocrImage(imgUrl)
+      } catch (err) {
+        console.warn('[interpretReport] OCR 失败', err && err.errMsg)
+        failHint = '未能从图片中识别出文字，请尝试更清晰的报告照片。'
+      }
+      if (ocrText.trim().length < 10) {
+        failHint = '未识别到有效文字，可能是图片模糊或非文字报告，请重新拍摄清晰照片上传。'
+      }
+    } else {
+      failHint = '暂不支持该文件类型，请上传图片或 PDF 报告。'
     }
 
     if (!ocrText || ocrText.trim().length < 10) {
-      // OCR 没提取到有效文字，可能是图片质量差或非文字报告
+      // 文字提取失败：给出针对性提示，便于用户下一步操作
       await patchReport(userId, reportId, {
         interpretationStatus: 'failed',
-        summary: '未能从报告中识别出文字内容，请尝试更清晰的图片。'
+        summary: failHint || '未能从报告中识别出文字内容。'
       })
-      return { ok: false, error: 'OCR 未识别到有效内容' }
+      return { ok: false, error: failHint || '未识别到有效内容' }
     }
 
     // 4. DeepSeek 结构化解读
@@ -104,16 +125,25 @@ exports.main = async (event) => {
 }
 
 // ── OCR：微信云开发通用印刷体识别 ──────────────
+// 注意：云调用方法名是 printedText（不是 printText）；imgUrl 传纯字符串 URL。
 async function ocrImage(imgUrl) {
-  // 下载图片为 Buffer，转 base64 喂给 OCR（printText 支持 imgUrl 或 img）
-  const res = await cloud.openapi.ocr.printText({
-    version: 2,
-    type: 'photo',
-    imgUrl: { contentType: 'image/jpeg', value: imgUrl }
-  })
+  const res = await cloud.openapi.ocr.printedText({ imgUrl })
   // res.items 数组，每项有 text
   const items = res && res.items ? res.items : []
   return items.map((it) => it.text || '').join('\n')
+}
+
+// ── PDF 文本提取：电子版 PDF 直接抽文字，又快又准 ──
+// 返回 { text, isScanned }；isScanned=true 表示是扫描件（几乎提不到文字）。
+async function extractTextFromPdf(fileID) {
+  const pdfParse = require('pdf-parse')
+  const { fileContent } = await cloud.downloadFile({ fileID })
+  const data = await pdfParse(fileContent) // fileContent 在云函数端是 Buffer，可直接喂
+  const text = (data && data.text ? data.text : '').trim()
+  // 扫描件判定：pdf-parse 能跑通但几乎提不到文字（每页平均字符数极低）
+  const pages = (data && data.numpages) || 1
+  const isScanned = text.length < pages * 15 // 经验阈值：电子版每页至少几十字
+  return { text, isScanned }
 }
 
 // ── DeepSeek 解读 ──────────────────────────────
