@@ -2,6 +2,7 @@
   "navigationBarTitleText": "确认指标",
   "usingComponents": {
     "app-button": "../../components/app-button/index",
-    "metric-annotation-card": "../../components/metric-annotation-card/index"
+    "metric-annotation-card": "../../components/metric-annotation-card/index",
+    "empty-state": "../../components/empty-state/index"
   }
 }

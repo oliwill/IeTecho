@@ -51,6 +51,18 @@ export const reportService = {
   },
 
   /**
+   * 更新报告（如翻转 interpretationStatus: pendingMetrics -> saved）。
+   * 注意：reportOps 的 report.update 按业务 id 过滤（与 memberOps 的 _id 不同），这里传业务 id。
+   */
+  async update(id: string, patch: Partial<Report>): Promise<void> {
+    if (isCloudReady()) {
+      await callCloud('reportOps', { action: 'report.update', id, patch })
+      return
+    }
+    throw new Error('update 需要 cloud，mock 阶段不支持写操作')
+  },
+
+  /**
    * 上传报告文件 + 写入报告记录。
    * 两步：前端直传云存储拿 fileID → 调 reportOps.create 写库。
    *

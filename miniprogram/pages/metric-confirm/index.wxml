@@ -2,24 +2,42 @@
   <view class="page-title">确认关键指标</view>
   <view class="page-subtitle">确认后的指标才会进入趋势统计。你可以编辑或忽略识别不准的项目。</view>
 
-  <view class="section stack-12">
-    <metric-annotation-card
-      wx:for="{{metrics}}"
-      wx:key="id"
-      metric="{{item}}"
-      show-actions="{{true}}"
-      bind:ignore="ignoreMetric"
-      bind:edit="editMetric"
+  <!-- 加载中 -->
+  <view class="section" wx:if="{{loading}}">
+    <view class="confirm-copy">正在整理解读结果……</view>
+  </view>
+
+  <!-- 加载失败 / 无待确认指标 -->
+  <view class="section" wx:elif="{{loadFailed}}">
+    <empty-state
+      title="没有可确认的指标"
+      description="可能解读未完成或未找到解读记录，可重试或返回重新解读。"
+      actionText="重试"
+      bind:action="retryLoad"
     />
   </view>
 
-  <view class="section card card-soft">
-    <view class="section-title">手动添加指标</view>
-    <view class="confirm-copy">如果报告里还有重要项目没有识别，可以在正式版本中手动添加。静态 Mock 阶段先展示入口。</view>
-    <button class="add-metric" bindtap="showMock">＋ 添加指标</button>
-  </view>
+  <!-- 待确认指标列表 -->
+  <block wx:else>
+    <view class="section stack-12">
+      <metric-annotation-card
+        wx:for="{{metrics}}"
+        wx:key="id"
+        metric="{{item}}"
+        show-actions="{{true}}"
+        bind:ignore="ignoreMetric"
+        bind:edit="editMetric"
+      />
+    </view>
 
-  <view class="section">
-    <app-button variant="primary" bind:tapbutton="saveToProfile">保存到健康档案</app-button>
-  </view>
+    <view class="section card card-soft">
+      <view class="section-title">手动添加指标</view>
+      <view class="confirm-copy">如果报告里还有重要项目没有识别，可以在正式版本中手动添加。当前阶段先展示入口。</view>
+      <button class="add-metric" bindtap="showMock">＋ 添加指标</button>
+    </view>
+
+    <view class="section">
+      <app-button variant="primary" bind:tapbutton="saveToProfile">保存到健康档案</app-button>
+    </view>
+  </block>
 </view>

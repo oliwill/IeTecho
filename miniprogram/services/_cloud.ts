@@ -1,4 +1,5 @@
 import { CLOUD_ENV } from '../config/cloud'
+import { getCloudInitStatus } from '../config/cloud-init'
 
 /**
  * Service 层云函数调用辅助。
@@ -44,7 +45,14 @@ export function callCloud<T = any>(name: string, data: Record<string, any> = {})
 /**
  * 当前是否已接入云开发。
  * 用于 service 层在云函数不可用时（如本地 mock 调试）回退到 mock 数据。
+ *
+ * init 状态判断：
+ *   - 'failed'：init 重试用尽仍失败 → 返回 false，让 service 走 mock 回退或明确报错，
+ *               避免「云函数调用失败 → catch 静默回退 mock → 用户误以为读到真实数据」。
+ *   - 'pending' / 'success'：返回 true（pending 时乐观，init 通常会成功；callFunction
+ *               自身会等到 SDK 就绪，或在未就绪时抛错由 callCloud reject）。
  */
 export function isCloudReady(): boolean {
-  return !!wx.cloud && !!CLOUD_ENV
+  if (!wx.cloud || !CLOUD_ENV) return false
+  return getCloudInitStatus() !== 'failed'
 }

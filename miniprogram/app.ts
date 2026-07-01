@@ -1,4 +1,4 @@
-import { CLOUD_ENV } from './config/cloud'
+import { initCloud } from './config/cloud-init'
 
 App<IAppOption>({
   globalData: {
@@ -9,10 +9,8 @@ App<IAppOption>({
       console.error('[cloud] 当前基础库不支持云开发，请升级微信开发者工具')
       return
     }
-    wx.cloud.init({
-      env: CLOUD_ENV,
-      traceUser: true
-    })
+    // init 失败会重试，并记录状态供 service 层判断（见 config/cloud-init.ts）。
+    initCloud()
   }
 })
 

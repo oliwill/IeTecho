@@ -6,5 +6,7 @@
   },
   "environment": {
     "DEEPSEEK_API_KEY": "你的 DeepSeek API key 填这里（sk- 开头）"
-  }
+  },
+  "timeout": 60,
+  "memorySize": 512
 }

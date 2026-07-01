@@ -35,6 +35,53 @@ cloudfunctions/getDashboard
 
 首次部署会自动 `npm install wx-server-sdk`，每个约 30 秒。部署成功后在云开发控制台「云函数」能看到。
 
+> 还要部署第 5 个：`cloudfunctions/interpretReport`（AI 报告解读，依赖 `pdf-parse`）。它有额外的超时配置要求，**务必看下一节**。
+
+## 二·五、interpretReport 超时配置（必做，否则必报 -504003）
+
+`interpretReport` 的工作流是 OCR（约 2 秒）+ 调 DeepSeek 大模型解读（5-20 秒），整体远超微信云开发**默认 3 秒**超时。不调超时，调用必在第 3 秒被平台 kill，报错：
+
+```text
+errCode: -504003 | Invoking task timed out after 3 seconds
+(FUNCTIONS_TIME_LIMIT_EXCEEDED)
+```
+
+**正确做法（二选一，推荐 A）：**
+
+**A. 控制台直接改（最可靠，立即生效）**
+
+云开发控制台 → 云函数 → `interpretReport` → 配置：
+
+```text
+超时时间：60 秒
+内存：   512 MB（可选，256 也能跑，调大可减少冷启动）
+```
+
+保存即生效，无需重新部署。
+
+**B. 走 config.json 部署（易踩坑，不推荐单独用）**
+
+`cloudfunctions/interpretReport/config.json`（在 `.gitignore`，本地建）里写：
+
+```json
+{
+  "permissions": { "openapi": ["ocr.printText"] },
+  "environment": { "DEEPSEEK_API_KEY": "sk-..." },
+  "timeout": 60,
+  "memorySize": 512
+}
+```
+
+⚠️ **已知坑**：对**已存在于线上的云函数**，「右键 → 上传并部署」会更新代码，但 `config.json` 里的 `timeout` / `memorySize` 经常**不覆盖**线上既有配置（旧版微信开发者工具尤其明显）。代码更新了、超时还是 3 秒，导致 `config.json` 写了 60 秒但线上仍报超时。所以**改完必须回控制台核对一遍**，或直接用方案 A。
+
+**验证是否真的修好：**
+
+1. 小程序里重新解读一份报告，看是否还报 -504003。
+2. 或云函数日志里看 `Duration`：修好前是 `3000ms` 卡死，修好后应是十几秒正常返回。
+3. 报错日志里 `Memory: 256MB` 说明跑的是默认配置；改为 512MB 后日志应显示 `Memory: 512MB`。
+
+> 超时上限：微信云开发云函数最大 300 秒。60 秒足够覆盖 OCR + DeepSeek + 余量，不必拉满。
+
 ## 三、导入种子数据（可选，推荐）
 
 为了让首页/家人页/报告页有数据展示，把 mock 数据导入云数据库。两种方式：
